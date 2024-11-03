@@ -19,19 +19,19 @@ class Cli  : CliktCommand(){
         if (verbose) {
             echo("Verarbeitete die Datei: ${ifile}")
         }
-       /* if (imodel == "BIOM") {
-            val biom = Biom(ifile, ofile)
+       if (imodel == "BIOM") {
+           val speciesLists = listOf("dr77", "dr77")
+            val biom = Biom(ifile, ofile, speciesLists)
             val l = biom.convert()
             println(l.size)
             biom.createWorkbook(l)
-        }*/
-        val speciesLists = listOf("dr77", "dr77")
-        val name = SpeciesService.getInstance(speciesLists).getSpecies("Dice Snake")
+        }
+       /* val name = SpeciesService.getInstance(speciesLists).getSpecies("Dice Snake")
         val name1 = SpeciesService.getInstance(speciesLists).getSpecies("Äskulapnatter")
         val name2 = SpeciesService.getInstance(speciesLists).getSpecies("Nixda")
         println("Scientific Name: $name")
         println("Scientific Name: $name1")
-        println("Scientific Name: $name2")
+        println("Scientific Name: $name2")*/
 
 
     }

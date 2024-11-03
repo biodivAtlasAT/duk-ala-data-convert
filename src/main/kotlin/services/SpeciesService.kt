@@ -20,7 +20,7 @@ class SpeciesService private constructor () {
             drs.forEach {
                 sL.addAll(getSpeciesList(it))
             }
-            sL.distinct()
+            sL.distinct() // todo - kann nicht distinct , da unterschiedliche "dr*"
             return instance
         }
 
