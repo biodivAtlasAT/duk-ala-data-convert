@@ -16,18 +16,18 @@ class SpeciesService private constructor () {
         private val sL: MutableList<ListsItem> = mutableListOf()
         private val instance: SpeciesService by lazy { SpeciesService() }
 
-        fun getInstance(drs: List<String>): SpeciesService {
+        fun getInstance(drs: List<String>, url: String): SpeciesService {
             drs.forEach {
-                sL.addAll(getSpeciesList(it))
+                sL.addAll(getSpeciesList(it, url))
             }
-            sL.distinct() // todo - kann nicht distinct , da unterschiedliche "dr*"
+            // sL.distinct() // todo - kann nicht distinct , da unterschiedliche "dr*"
             return instance
         }
 
-        private fun getSpeciesList(dr: String): List<ListsItem> {
+        private fun getSpeciesList(dr: String, url: String): List<ListsItem> {
             val client = HttpClient.newBuilder().build()
             val request = HttpRequest.newBuilder()
-                .uri(URI.create("https://lists.biodivdev.at/ws/speciesListItems/$dr"))
+                .uri(URI.create("$url/$dr"))
                 .GET()
                 .build()
             val body = client.send(request, HttpResponse.BodyHandlers.ofString()).body()
@@ -38,8 +38,8 @@ class SpeciesService private constructor () {
 
     }
 
-    fun getSpecies(name: String): String? {
-        val bieList = getSpeciesFromBie(name)
+    fun getSpecies(name: String, url:  String): String? {
+        val bieList = getSpeciesFromBie(name, url)
         bieList.forEach { it1 ->
             if (sL.count { it1.acceptedName == it.scientificName } > 0)
                 return it1.acceptedName
@@ -47,11 +47,11 @@ class SpeciesService private constructor () {
         return null
     }
 
-    private fun getSpeciesFromBie(name: String): List<BieItem> {
+    private fun getSpeciesFromBie(name: String, url: String): List<BieItem> {
         val encodedPara = URLEncoder.encode(name, "UTF-8")
         val client = HttpClient.newBuilder().build()
         val request = HttpRequest.newBuilder()
-            .uri(URI.create("https://bie.biodivdev.at/ws/guid/$encodedPara"))
+            .uri(URI.create("$url/$encodedPara"))
             .GET()
             .build()
 

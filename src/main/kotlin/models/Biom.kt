@@ -1,26 +1,23 @@
 package duk.at.models
 
-import duk.at.services.ListsItem
+import duk.at.Cli
 import duk.at.services.SpeciesService
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.File;
-import java.io.FileInputStream;
+import org.apache.poi.ss.usermodel.*
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.IOException;
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Iterator
 
 
-class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>){
+class Biom(private val cli: Cli){
 
     fun convert(): List<BiocollectBiom> {
+
         val dcList = mutableListOf<BiocollectBiom>()
         try {
-            val file = FileInputStream(File(ifile))
+            val file = FileInputStream(File(cli.ifile))
             val workbook: Workbook = XSSFWorkbook(file)
             val sheet: Sheet = workbook.getSheetAt(0)
             /* ID;TIMESTAMP;FILEORDNER;GARTEN_HASH;GARTEN_ID;ART;ANZAHL_1;ANZAHL_2;ANZAHL_ANMERKUNG;
@@ -30,7 +27,7 @@ class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>
             for (row in sheet) {
                 if (row.rowNum == 0)
                     continue
-                if (row.rowNum == 10)
+                if (row.rowNum > cli.count)
                     break
                 var species: String? = null
                 var count: Int? = null
@@ -38,8 +35,10 @@ class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>
                 var longitude: String? = null
                 var latitude: String? = null
                 var comment = ""
-                var surveyDate: LocalDate? = null
+                var surveyDate: String? = null
                 var imageList: MutableList<Image> = mutableListOf()
+                var serial: String = ""
+                var speciesName: String = ""
 
                 for (cell in row) {
                     val value = when (cell.cellType) {
@@ -48,13 +47,19 @@ class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>
                         CellType.BOOLEAN -> cell.booleanCellValue
                         else -> ""
                     }
-                    if (cell.columnIndex == 9 && cell.cellType == CellType.STRING) {
-                        val customFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-                        val dateString = cell.stringCellValue
-                        surveyDate = LocalDate.parse(dateString, customFormat)
+                    if (cell.columnIndex == 0) {
+                        if (cell.cellType == CellType.NUMERIC)
+                            serial = cell.numericCellValue.toInt().toString()
+                        if (cell.cellType == CellType.STRING)
+                            serial = cell.stringCellValue
                     }
-                    if (cell.columnIndex == 5)
-                        species = SpeciesService.getInstance(speciesLists).getSpecies(cell.stringCellValue)
+                    if (cell.columnIndex == 5) {
+                        species = SpeciesService.getInstance(
+                            cli.speciesLists.split(",").toList(),
+                            cli.listsUrl
+                        ).getSpecies(cell.stringCellValue, cli.bieUrl)
+                        speciesName = cell.stringCellValue
+                    }
                     if (cell.columnIndex == 6) {
                         if (cell.cellType == CellType.NUMERIC)
                             count = cell.numericCellValue.toInt()
@@ -70,6 +75,13 @@ class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>
                             comment = cell.numericCellValue.toString()
                         if (cell.cellType == CellType.STRING)
                             comment = cell.stringCellValue
+                    }
+                    if (cell.columnIndex == 9) {
+                        if (DateUtil.isCellDateFormatted(cell)) {
+                            val date: Date = cell.dateCellValue
+                            val sdf = SimpleDateFormat("dd.MM.yyyy")
+                            surveyDate = sdf.format(date)
+                        }
                     }
                     if (cell.columnIndex == 13) {
                         if (cell.cellType == CellType.NUMERIC)
@@ -88,14 +100,14 @@ class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>
                     if (cell.columnIndex == 21)
                         recordedBy = recordedBy + " " + cell.stringCellValue
                     if (cell.columnIndex == 22)
-                        imageList = ImageList(cell.stringCellValue, recordedBy, "noLic",surveyDate).iL
+                        imageList = ImageList(cell.stringCellValue, recordedBy, "noLic", surveyDate).iL
                 }
-                val dc = BiocollectBiom( "serial",
+                val dc = BiocollectBiom( serial,
                     surveyDate.toString(),
                     recordedBy,
                     latitude?:"0.0",
                     longitude?:"0.0",
-                    species?: "no species",
+                    speciesName?: "no species",
                     species?: "no species",
                     count!!.toInt(),
                     comment,
@@ -134,12 +146,28 @@ class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>
         var rowIndex = 2
         dcList.forEach{ rowData ->
             val row = sheet.createRow(rowIndex)
-            val scienitificNameCell = row.createCell(9)
-            scienitificNameCell.setCellValue(rowData.species1Name)
+
+            row.createCell(0).setCellValue(rowData.serial)
+            row.createCell(2).setCellValue(rowData.surveyDate)
+            row.createCell(4).setCellValue(rowData.comments1)
+            row.createCell(5).setCellValue(rowData.recordedBy)
+            row.createCell(7).setCellValue(rowData.locationLatitude)
+            row.createCell(8).setCellValue(rowData.locationLongitude)
+
+            row.createCell(9).setCellValue(rowData.species1Name)
+            row.createCell(10).setCellValue(rowData.species1ScientificName)
+            row.createCell(13).setCellValue(rowData.individualCount1.toDouble())
 
             if (rowData.imageList.size > 0) {
-                val img1UrlCell = row.createCell(15)
-                img1UrlCell.setCellValue(rowData.imageList[0].url)
+                row.createCell(16).setCellValue(rowData.imageList[0].url)
+                row.createCell(17).setCellValue(rowData.imageList[0].license)
+                row.createCell(18).setCellValue(rowData.imageList[0].name)
+                row.createCell(19).setCellValue(rowData.imageList[0].fileName)
+                row.createCell(20).setCellValue(rowData.imageList[0].attribution)
+                row.createCell(21).setCellValue(rowData.imageList[0].notes)
+                row.createCell(22).setCellValue(rowData.imageList[0].projectId)
+                row.createCell(23).setCellValue(rowData.imageList[0].projectName)
+                row.createCell(24).setCellValue(rowData.imageList[0].dateTaken)
             }
 
 /*                rowData.forEachIndexed { cellIndex, cellData ->
@@ -160,7 +188,7 @@ class Biom (val ifile: String, val ofile: String, val speciesLists: List<String>
             rowIndex++
         }
 
-        FileOutputStream(ofile).use { outputStream ->
+        FileOutputStream(cli.ofile).use { outputStream ->
             workbook.write(outputStream)
         }
         workbook.close()

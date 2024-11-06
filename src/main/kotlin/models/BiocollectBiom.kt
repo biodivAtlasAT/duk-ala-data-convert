@@ -1,9 +1,5 @@
 package duk.at.models
 
-import duk.at.services.ListsItem
-import java.time.LocalDate
-import java.util.*
-
 data class BiocollectBiom(
     val serial: String,
     val surveyDate: String,
@@ -34,17 +30,16 @@ data class BiocollectBiom(
 
 }
 
-data class ImageList(val str: String, val recordedBy: String, val license: String, val dateTaken: LocalDate?) {
+data class ImageList(val str: String, val recordedBy: String, val license: String, val dateTaken: String?) {
     val iL: MutableList<Image> = mutableListOf()
     init {
-        str.split(",").forEach {
-            val img = Image(it.trim(), recordedBy, license, dateTaken)
-            iL.add((img))
+        str.split(",").filter { it.trim().isNotEmpty() }.forEach {
+            iL.add(Image(it.trim(), recordedBy, license, dateTaken))
         }
     }
 }
 
-data class Image(val str: String, val attribution: String, val license: String, val dateTaken: LocalDate?) {
+data class Image(val str: String, val attribution: String, val license: String, val dateTaken: String?) {
     var url: String = str
     var name: String
     var fileName: String

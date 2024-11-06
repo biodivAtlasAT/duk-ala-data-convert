@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="First xlsx read/write">
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="ImageDetails">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" afterDir="false" />
@@ -69,7 +69,6 @@
     "Kotlin.MainKt (1).executor": "Run",
     "Kotlin.MainKt.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -92,7 +91,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;D:\\reinhardt\\firma\\DUK_2024\\testdaten\\sichtungen_1728295195.xlsx&quot; --ofile=bbb.xlsx --imodel=BIOM" />
+      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;D:\\reinhardt\\firma\\DUK_2024\\testdaten\\sichtungen_1728295195.xlsx&quot; --ofile=bbb.xlsx --imodel=BIOM --species-lists=dr77,dr77 --count=5 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -136,6 +135,7 @@
       <workItem from="1730365979035" duration="2162000" />
       <workItem from="1730371161147" duration="5455000" />
       <workItem from="1730445960149" duration="6454000" />
+      <workItem from="1730891962949" duration="4327000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -153,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730389570305</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="ImageDetails">
+      <option name="closed" value="true" />
+      <created>1730625057042</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730625057042</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,17 +172,7 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Initial commit" />
     <MESSAGE value="First xlsx read/write" />
-    <option name="LAST_COMMIT_MESSAGE" value="First xlsx read/write" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/models/Biom.kt</url>
-          <line>139</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="ImageDetails" />
+    <option name="LAST_COMMIT_MESSAGE" value="ImageDetails" />
   </component>
 </project>
