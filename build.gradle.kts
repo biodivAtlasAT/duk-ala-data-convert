@@ -1,9 +1,14 @@
 plugins {
     kotlin("jvm") version "1.9.23"
+    application
+    id("com.github.johnrengelman.shadow") version "7.1.0"
 }
+
 
 group = "duk.at"
 version = "1.0-SNAPSHOT"
+
+
 
 repositories {
     mavenCentral()
@@ -22,9 +27,31 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
+application {
+    mainClass.set("duk.at.MainKt")
+}
+
 tasks.test {
     useJUnitPlatform()
 }
 kotlin {
     jvmToolchain(11)
+}
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "duk.at.MainKt"
+    }
+}
+
+tasks.shadowJar {
+    archiveBaseName.set("duk-ala-data-convert")
+    manifest {
+        attributes["Main-Class"] = "duk.at.MainKt"
+    }
+}
+
+tasks.jar {
+    manifest {
+        attributes["Multi-Release"] = "true"
+    }
 }

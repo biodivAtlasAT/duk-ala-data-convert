@@ -1,7 +1,8 @@
 package duk.at.models
 
-import duk.at.Cli
+import duk.at.*
 import duk.at.services.SpeciesService
+import org.apache.logging.log4j.LogManager
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
@@ -11,7 +12,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+
 class Biom(private val cli: Cli){
+    /* ID;TIMESTAMP;FILEORDNER;GARTEN_HASH;GARTEN_ID;ART;ANZAHL_1;ANZAHL_2;ANZAHL_ANMERKUNG;
+    DATUM;SCHONMAL;ADRESSE_1;ADRESSE_2;LÄNGENGRAD;BREITENGRAD;ABGESIEDELT;ABGESIEDELT_WHY;
+    ANGESIEDELT;ANGESIEDELT_WHY;EMAIL;VORNAME;NACHNAME;DATEIEN;GARTEN-FORM;*/
+
+    companion object {
+        private val logger: org.apache.logging.log4j.Logger? = LogManager.getLogger()
+    }
 
     fun convert(): List<BiocollectBiom> {
 
@@ -20,15 +29,11 @@ class Biom(private val cli: Cli){
             val file = FileInputStream(File(cli.ifile))
             val workbook: Workbook = XSSFWorkbook(file)
             val sheet: Sheet = workbook.getSheetAt(0)
-            /* ID;TIMESTAMP;FILEORDNER;GARTEN_HASH;GARTEN_ID;ART;ANZAHL_1;ANZAHL_2;ANZAHL_ANMERKUNG;
-            DATUM;SCHONMAL;ADRESSE_1;ADRESSE_2;LÄNGENGRAD;BREITENGRAD;ABGESIEDELT;ABGESIEDELT_WHY;
-            ANGESIEDELT;ANGESIEDELT_WHY;EMAIL;VORNAME;NACHNAME;DATEIEN;GARTEN-FORM;*/
 
             for (row in sheet) {
-                if (row.rowNum == 0)
-                    continue
-                if (row.rowNum > cli.count)
-                    break
+                if (row.rowNum == 0) continue
+                if (row.rowNum > cli.count) break
+
                 var species: String? = null
                 var count: Int? = null
                 var recordedBy: String = ""
@@ -38,82 +43,44 @@ class Biom(private val cli: Cli){
                 var surveyDate: String? = null
                 var imageList: MutableList<Image> = mutableListOf()
                 var serial: String = ""
-                var speciesName: String = ""
+                var scientificName: String? = null
+                var errorList: MutableList<String> = mutableListOf()
 
                 for (cell in row) {
-                    val value = when (cell.cellType) {
-                        CellType.STRING -> cell.stringCellValue
-                        CellType.NUMERIC -> cell.numericCellValue
-                        CellType.BOOLEAN -> cell.booleanCellValue
-                        else -> ""
-                    }
-                    if (cell.columnIndex == 0) {
-                        if (cell.cellType == CellType.NUMERIC)
-                            serial = cell.numericCellValue.toInt().toString()
-                        if (cell.cellType == CellType.STRING)
-                            serial = cell.stringCellValue
-                    }
+                    if (cell.columnIndex == 0) serial = cell.makeStringFromStringOrNumeric
                     if (cell.columnIndex == 5) {
-                        species = SpeciesService.getInstance(
-                            cli.speciesLists.split(",").toList(),
-                            cli.listsUrl
-                        ).getSpecies(cell.stringCellValue, cli.bieUrl)
-                        speciesName = cell.stringCellValue
+                        species = cell.stringCellValue
+                        if (species.isEmpty())
+                            errorList.add("column ART is empty!")
+                        else
+                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli),"scientificName for <$species> not found in BIE or not in LIST!")
                     }
-                    if (cell.columnIndex == 6) {
-                        if (cell.cellType == CellType.NUMERIC)
-                            count = cell.numericCellValue.toInt()
-                        if (cell.cellType == CellType.STRING) {
-                            if (cell.stringCellValue.startsWith(">"))
-                                count = cell.stringCellValue.split(">")[1].toInt()
-                            else
-                                count = cell.stringCellValue.split(" ")[0].toInt()
-                        }
-                    }
-                    if (cell.columnIndex == 8) {
-                        if (cell.cellType == CellType.NUMERIC)
-                            comment = cell.numericCellValue.toString()
-                        if (cell.cellType == CellType.STRING)
-                            comment = cell.stringCellValue
-                    }
-                    if (cell.columnIndex == 9) {
-                        if (DateUtil.isCellDateFormatted(cell)) {
-                            val date: Date = cell.dateCellValue
-                            val sdf = SimpleDateFormat("dd.MM.yyyy")
-                            surveyDate = sdf.format(date)
-                        }
-                    }
-                    if (cell.columnIndex == 13) {
-                        if (cell.cellType == CellType.NUMERIC)
-                            longitude = cell.numericCellValue.toString()
-                        if (cell.cellType == CellType.STRING)
-                            longitude = cell.stringCellValue
-                    }
-                    if (cell.columnIndex == 14) {
-                        if (cell.cellType == CellType.NUMERIC)
-                            latitude = cell.numericCellValue.toString()
-                        if (cell.cellType == CellType.STRING)
-                            latitude = cell.stringCellValue
-                    }
-                    if (cell.columnIndex == 20)
-                        recordedBy = cell.stringCellValue
-                    if (cell.columnIndex == 21)
-                        recordedBy = recordedBy + " " + cell.stringCellValue
-                    if (cell.columnIndex == 22)
-                        imageList = ImageList(cell.stringCellValue, recordedBy, "noLic", surveyDate).iL
+                    if (cell.columnIndex == 6) count = errorList.AddWhenNull(cell.makeIntFromStringOrNumeric, "ANZAHL_1 is incorrect!")
+                    if (cell.columnIndex == 8) comment = cell.makeStringFromStringOrNumeric
+                    if (cell.columnIndex == 9) surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("dd.MM.yyyy"), "TIMESTAMP is incorrect!")
+                    if (cell.columnIndex == 13) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric,"Longitude is incorrect!")
+                    if (cell.columnIndex == 14) latitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric, "Latitude is incorrect!")
+                    if (cell.columnIndex == 20) recordedBy = cell.stringCellValue
+                    if (cell.columnIndex == 21) recordedBy = errorList.AddWhenEmpty(recordedBy + " " + cell.stringCellValue, "VORNAME, NACHNAME is empty!")
+                    if (cell.columnIndex == 22) imageList = ImageList(cell.stringCellValue, recordedBy, "noLic", surveyDate).iL
                 }
-                val dc = BiocollectBiom( serial,
-                    surveyDate.toString(),
-                    recordedBy,
-                    latitude?:"0.0",
-                    longitude?:"0.0",
-                    speciesName?: "no species",
-                    species?: "no species",
-                    count!!.toInt(),
-                    comment,
-                    imageList
-                )
-                dcList.add(dc)
+                if (errorList.size == 0) {
+                    dcList.add(BiocollectBiom(
+                        serial,
+                        surveyDate.toString(),
+                        recordedBy,
+                        latitude!!,
+                        longitude!!,
+                        species!!,
+                        scientificName!!,
+                        count!!.toInt(),
+                        comment,
+                        imageList
+                    ))
+                } else {
+                    val err = "Error in RowNum: ${row.rowNum} <Serial: $serial>: " + errorList.joinToString(", ")
+                    logger?.error(err)
+                }
             }
 
             file.close()
@@ -169,22 +136,6 @@ class Biom(private val cli: Cli){
                 row.createCell(23).setCellValue(rowData.imageList[0].projectName)
                 row.createCell(24).setCellValue(rowData.imageList[0].dateTaken)
             }
-
-/*                rowData.forEachIndexed { cellIndex, cellData ->
-                val cell = row.createCell(cellIndex)
-                when (cellData) {
-                    is String -> cell.setCellValue(cellData)
-                    is Double -> cell.setCellValue(cellData)
-                    is Int -> cell.setCellValue(cellData.toDouble())
-                    is Boolean -> cell.setCellValue(cellData)
-                    is Date -> {
-                        cell.setCellValue(cellData)
-                        val style = workbook.createCellStyle()
-                        style.dataFormat = workbook.creationHelper.createDataFormat().getFormat("dd-mm-yyyy")
-                        cell.cellStyle = style
-                    }
-                    else -> cell.setCellValue(cellData.toString())
-                }*/
             rowIndex++
         }
 
@@ -193,5 +144,6 @@ class Biom(private val cli: Cli){
         }
         workbook.close()
     }
-
 }
+
+

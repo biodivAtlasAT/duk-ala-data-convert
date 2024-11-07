@@ -8,6 +8,12 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import duk.at.models.Biom
+import duk.at.services.SpeciesService
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.DateUtil
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Cli  : CliktCommand(){
     val verbose by option("-v", "--verbose", help="Show Details").flag()
@@ -29,14 +35,78 @@ class Cli  : CliktCommand(){
             println(l.size)
             biom.createWorkbook(l)
         }
-       /* val name = SpeciesService.getInstance(speciesLists).getSpecies("Dice Snake")
-        val name1 = SpeciesService.getInstance(speciesLists).getSpecies("Äskulapnatter")
-        val name2 = SpeciesService.getInstance(speciesLists).getSpecies("Nixda")
-        println("Scientific Name: $name")
-        println("Scientific Name: $name1")
-        println("Scientific Name: $name2")*/
-
-
     }
 
 }
+
+fun <String> MutableList<String>.AddWhenEmpty(str: String, msg: String): String {
+    if (str == "")
+        this.add(msg)
+    return str
+}
+
+fun <String> MutableList<String>.AddWhenNull(num: Int?, msg: String): Int? {
+    if (num == null)
+        this.add(msg)
+    return num
+}
+fun <String> MutableList<String>.AddWhenNull(str: String?, msg: String): String? {
+    if (str == null)
+        this.add(msg)
+    return str
+}
+
+fun Cell.makeDateStringFromString(simpleDateFormat: String): String? {
+    if (this.cellType != CellType.STRING) {
+        if (DateUtil.isCellDateFormatted(this)) {
+            val date: Date = this.dateCellValue
+            val sdf = SimpleDateFormat(simpleDateFormat)
+            return sdf.format(date)
+        }
+    }
+    return null
+}
+
+fun Cell.getScientificName(cli: Cli): String? = SpeciesService.getInstance(
+    cli.speciesLists.split(",").toList(),
+    cli.listsUrl
+).getSpecies(this.stringCellValue, cli.bieUrl)
+
+val Cell.makeLongLatStringFromStringOrNumeric: String?
+    get() {
+        var longlat: String? = null
+        if (this.cellType == CellType.NUMERIC)
+            longlat = this.numericCellValue.toString()
+        if (this.cellType == CellType.STRING)
+            longlat = this.stringCellValue
+        if (longlat?.subSequence(0,4) == "0.00")
+            longlat = null
+        if (longlat?.subSequence(0,4) == "0.00")
+            longlat = null
+        return longlat
+    }
+
+
+val Cell.makeIntFromStringOrNumeric: Int?
+    get() {
+        var rc: Int? = null
+        if (this.cellType == CellType.NUMERIC)
+            rc = this.numericCellValue.toInt()
+        if (this.cellType == CellType.STRING) {
+            if (this.stringCellValue.startsWith(">"))
+                rc = this.stringCellValue.split(">")[1].toInt()
+            else
+                rc = this.stringCellValue.split(" ")[0].toInt()
+        }
+        return rc
+    }
+
+val Cell.makeStringFromStringOrNumeric: String
+    get() {
+        var rc: String = ""
+        if (this.cellType == CellType.NUMERIC)
+            rc = this.numericCellValue.toInt().toString()
+        if (this.cellType == CellType.STRING)
+            rc = this.stringCellValue
+        return rc
+    }
