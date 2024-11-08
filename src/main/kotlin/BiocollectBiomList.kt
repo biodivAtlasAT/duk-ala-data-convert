@@ -19,7 +19,7 @@ object BiocollectBiomList {
         val hl2 = listOf("Serial Number","reinhardtsField","Survey date","Survey start time","Notes","Recorded by","Site identifier (siteId)","Latitude","Longitude","Name","Scientific name","Common name","ALA identifier","How many individuals did you see?","Are you confident of the species identification?","Comments","Image URL","Licence","Image name","Image filename","Attribution","Notes","Project Id","Project name","Date taken","Project name","Collection ID","Occurrence ID","Catalog number","Field number","Identification remarks","Occurrence status","Basis of record","Phylum","Class")
 
         val workbook = XSSFWorkbook()
-        val sheet = workbook.createSheet("csv")
+        val sheet = workbook.createSheet("RW_BIOM")
 
         val row = sheet.createRow(0)
         hl1.forEachIndexed { cellIndex, cellData ->
