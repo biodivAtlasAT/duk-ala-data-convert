@@ -1,16 +1,17 @@
 package duk.at.models
 
 import duk.at.*
-import duk.at.services.SpeciesService
 import org.apache.logging.log4j.LogManager
-import org.apache.poi.ss.usermodel.*
+import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.CreationHelper
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
-
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class Biom(private val cli: Cli){
@@ -34,20 +35,26 @@ class Biom(private val cli: Cli){
                 if (row.rowNum == 0) continue
                 if (row.rowNum > cli.count) break
 
+
                 var species: String? = null
                 var count: Int? = null
                 var recordedBy: String = ""
-                var longitude: String? = null
+                var longitude: Double? = null
                 var latitude: String? = null
                 var comment = ""
-                var surveyDate: String? = null
+                var sightingDate: LocalDate? = null
+                var surveyDate: LocalDate? = null
                 var imageList: MutableList<Image> = mutableListOf()
                 var serial: String = ""
                 var scientificName: String? = null
                 var errorList: MutableList<String> = mutableListOf()
 
                 for (cell in row) {
+                    imageList.clear()
                     if (cell.columnIndex == 0) serial = cell.makeStringFromStringOrNumeric
+                    if (cell.columnIndex == 1) {
+                        surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("yyyy-MM-dd"), "TIMESTAMP is incorrect!")
+                    }
                     if (cell.columnIndex == 5) {
                         species = cell.stringCellValue
                         if (species.isEmpty())
@@ -57,19 +64,25 @@ class Biom(private val cli: Cli){
                     }
                     if (cell.columnIndex == 6) count = errorList.AddWhenNull(cell.makeIntFromStringOrNumeric, "ANZAHL_1 is incorrect!")
                     if (cell.columnIndex == 8) comment = cell.makeStringFromStringOrNumeric
-                    if (cell.columnIndex == 9) surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("dd.MM.yyyy"), "TIMESTAMP is incorrect!")
-                    if (cell.columnIndex == 13) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric,"Longitude is incorrect!")
+                    if (cell.columnIndex == 9) sightingDate = errorList.AddWhenNull(cell.makeDateStringFromString("yyyy-MM-dd"), "TIMESTAMP is incorrect!")
+
+                    if (cell.columnIndex == 13) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2,"Longitude is incorrect!")
+
+
+
                     if (cell.columnIndex == 14) latitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric, "Latitude is incorrect!")
                     if (cell.columnIndex == 20) recordedBy = cell.stringCellValue
                     if (cell.columnIndex == 21) recordedBy = errorList.AddWhenEmpty(recordedBy + " " + cell.stringCellValue, "VORNAME, NACHNAME is empty!")
-                    if (cell.columnIndex == 22) imageList = ImageList(cell.stringCellValue, recordedBy, "noLic", surveyDate).iL
+                    if (cell.columnIndex == 22) imageList = ImageList(cell.stringCellValue, recordedBy, "CC BY 3.0", sightingDate, errorList).iL
                 }
+                if (imageList.size == 0)
+                    errorList.add("No valid Image found!")
                 if (errorList.size == 0) {
                     dcList.add(BiocollectBiom(
                         serial,
-                        surveyDate.toString(),
+                        surveyDate!!,
                         recordedBy,
-                        latitude!!,
+                        latitude!!.toDouble(),
                         longitude!!,
                         species!!,
                         scientificName!!,
@@ -110,19 +123,42 @@ class Biom(private val cli: Cli){
             cell.setCellValue(cellData.toString())
         }
 
+        val createHelper: CreationHelper = workbook.creationHelper
+        val datumStyle: CellStyle = workbook.createCellStyle()
+        datumStyle.dataFormat = createHelper.createDataFormat().getFormat("dd.mm.yyyy")
+
+        /*val style = workbook.createCellStyle()*/
+        val format = workbook.createDataFormat()
+        val lonLatStyle: CellStyle = workbook.createCellStyle()
+        lonLatStyle.dataFormat = format.getFormat("0.00000000")
+
         var rowIndex = 2
         dcList.forEach{ rowData ->
             val row = sheet.createRow(rowIndex)
 
             row.createCell(0).setCellValue(rowData.serial)
-            row.createCell(2).setCellValue(rowData.surveyDate)
+
+            /*val dateTimeString = rowData.surveyDate
+            val formatter = DateTimeFormatter.ISO_DATE
+            val dateTime = LocalDate.parse(dateTimeString, formatter)*/
+            val c = row.createCell(2)
+            c.setCellValue(rowData.surveyDate)
+            c.setCellStyle(datumStyle);
+
             row.createCell(4).setCellValue(rowData.comments1)
             row.createCell(5).setCellValue(rowData.recordedBy)
-            row.createCell(7).setCellValue(rowData.locationLatitude)
-            row.createCell(8).setCellValue(rowData.locationLongitude)
+            row.createCell(7).also {
+                it.setCellValue(rowData.locationLatitude)
+                it.setCellStyle(lonLatStyle);
+            }
+            row.createCell(8).also {
+                    it.setCellValue(rowData.locationLongitude)
+                    it.setCellStyle(lonLatStyle);
+            }
 
             row.createCell(9).setCellValue(rowData.species1Name)
             row.createCell(10).setCellValue(rowData.species1ScientificName)
+            row.createCell(11).setCellValue(rowData.species1Name)
             row.createCell(13).setCellValue(rowData.individualCount1.toDouble())
 
             if (rowData.imageList.size > 0) {
@@ -134,7 +170,11 @@ class Biom(private val cli: Cli){
                 row.createCell(21).setCellValue(rowData.imageList[0].notes)
                 row.createCell(22).setCellValue(rowData.imageList[0].projectId)
                 row.createCell(23).setCellValue(rowData.imageList[0].projectName)
-                row.createCell(24).setCellValue(rowData.imageList[0].dateTaken)
+
+                row.createCell(24).also {
+                    it.setCellValue(rowData.imageList[0].dateTaken)
+                    it.setCellStyle(datumStyle);
+                }
             }
             rowIndex++
         }

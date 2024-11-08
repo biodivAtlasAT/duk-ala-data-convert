@@ -42,3 +42,5 @@ bin/
 .DS_Store
 /logs/app.log
 /bbb.xlsx
+/RW_BIOM.xlsx
+/RW_BIOM_ori.xlsx
