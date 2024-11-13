@@ -2,6 +2,7 @@ package duk.at
 
 import duk.at.models.BiocollectBiom
 import org.apache.poi.ss.usermodel.CellStyle
+import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.CreationHelper
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -10,16 +11,13 @@ import java.io.FileOutputStream
 
 object BiocollectBiomList {
     fun createWorkbook(dcList: List<BiocollectBiom>, cli: Cli) {
-
-  /*      val sourceFile = File(cli.template)
-        val destFile = File(cli.ofile)
-        sourceFile.copyTo(destFile, overwrite = true)*/
-
-        val hl1 = listOf("serial","reinhardtsField","surveyDate","surveyStartTime","notes","recordedBy","location","locationLatitude","locationLongitude","species1.name","species1.scientificName","species1.commonName","species1.guid","individualCount1","identificationConfidence1","comments1","sightingPhoto1.url","sightingPhoto1.licence","sightingPhoto1.name","sightingPhoto1.filename","sightingPhoto1.attribution","sightingPhoto1.notes","sightingPhoto1.projectId","sightingPhoto1.projectName","sightingPhoto1.dateTaken","project_name","collectionID","occurrenceID","catalogNumber","fieldNumber","identificationRemarks","occurrenceStatus","basisOfRecord","phylum","class")
-        val hl2 = listOf("Serial Number","reinhardtsField","Survey date","Survey start time","Notes","Recorded by","Site identifier (siteId)","Latitude","Longitude","Name","Scientific name","Common name","ALA identifier","How many individuals did you see?","Are you confident of the species identification?","Comments","Image URL","Licence","Image name","Image filename","Attribution","Notes","Project Id","Project name","Date taken","Project name","Collection ID","Occurrence ID","Catalog number","Field number","Identification remarks","Occurrence status","Basis of record","Phylum","Class")
+        val templateInfos = readFirstTwoRows(cli.template)
+        val hl1 = templateInfos.first
+        val hl2 = templateInfos.second
+        val sheetName = templateInfos.third
 
         val workbook = XSSFWorkbook()
-        val sheet = workbook.createSheet("RW_BIOM")
+        val sheet = workbook.createSheet(sheetName)
 
         val row = sheet.createRow(0)
         hl1.forEachIndexed { cellIndex, cellData ->
@@ -32,17 +30,10 @@ object BiocollectBiomList {
             cell.setCellValue(cellData.toString())
         }
 
-
- //       val file = File(cli.ofile)
-//        val workbook = WorkbookFactory.create(file)
-
-  //      val sheet = workbook.getSheet("RW_BIOM")
-
         val createHelper: CreationHelper = workbook.creationHelper
         val datumStyle: CellStyle = workbook.createCellStyle()
         datumStyle.dataFormat = createHelper.createDataFormat().getFormat("dd.mm.yyyy")
 
-        /*val style = workbook.createCellStyle()*/
         val format = workbook.createDataFormat()
         val lonLatStyle: CellStyle = workbook.createCellStyle()
         lonLatStyle.dataFormat = format.getFormat("0.00000000")
@@ -101,4 +92,30 @@ object BiocollectBiomList {
         workbook.close()
     }
 
+    private fun readFirstTwoRows(filePath: String): Triple<MutableList<String>, MutableList<String>, String> {
+        val hl1 = mutableListOf<String>()
+        val hl2 = mutableListOf<String>()
+
+        val inputStream = File(filePath).inputStream()
+        val workbook = WorkbookFactory.create(inputStream)
+        val sheet = workbook.getSheetAt(0)
+        val sheetName = sheet.sheetName
+
+        for (rowIndex in 0..1) { // Erste zwei Zeilen (Index 0 und 1)
+            val row = sheet.getRow(rowIndex)
+            if (row != null) {
+                for (cell in row) {
+                    val cellValue = when (cell.cellType) {
+                        CellType.STRING -> cell.stringCellValue
+                        CellType.NUMERIC -> cell.numericCellValue.toString()
+                        CellType.BOOLEAN -> cell.booleanCellValue.toString()
+                        else -> ""
+                    }
+                    if (rowIndex == 0) hl1.add(cellValue.toString())
+                    if (rowIndex == 1) hl2.add(cellValue.toString())
+                }
+            }
+        }
+        return Triple(hl1, hl2, sheetName)
+    }
 }
