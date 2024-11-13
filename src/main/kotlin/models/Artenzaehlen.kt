@@ -12,6 +12,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
@@ -37,7 +38,7 @@ class Artenzaehlen(private val cli: Cli){
                 var longitude: Double?
                 var latitude: Double?
                 var comment: String
-                var sightingDate: LocalDate?
+                var sightingDate: LocalDateTime?
                 var surveyDate: LocalDate?
                 var imageList: MutableList<Image>
                 var serial: String
@@ -104,9 +105,9 @@ class Artenzaehlen(private val cli: Cli){
         }
     }
 
-    fun convDate2(str: String): LocalDate? {
+    fun convDate2(str: String): LocalDateTime? {
         try {
-            return LocalDate.parse(str, formatter2)
+            return LocalDateTime.parse(str, formatter2)
         } catch (ex: DateTimeParseException) {
             return null
         }

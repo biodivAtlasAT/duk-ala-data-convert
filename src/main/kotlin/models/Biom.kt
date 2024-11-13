@@ -73,7 +73,7 @@ class Biom(private val cli: Cli){
                     if (cell.columnIndex == 14) latitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric, "Latitude is incorrect!")
                     if (cell.columnIndex == 20) recordedBy = cell.stringCellValue
                     if (cell.columnIndex == 21) recordedBy = errorList.AddWhenEmpty(recordedBy + " " + cell.stringCellValue, "VORNAME, NACHNAME is empty!")
-                    if (cell.columnIndex == 22) imageList = ImageList(cell.stringCellValue, recordedBy, "CC BY 3.0", sightingDate, errorList).iL
+                    //if (cell.columnIndex == 22) imageList = ImageList(cell.stringCellValue, recordedBy, "CC BY 3.0", sightingDate, errorList).iL
                 }
                 if (imageList.size == 0)
                     errorList.add("No valid Image found!")

@@ -1,6 +1,7 @@
 package duk.at.models
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class BiocollectBiom(
     val serial: String,
@@ -13,11 +14,11 @@ data class BiocollectBiom(
     val individualCount1: Int,
     val comments1: String,
     val imageList: MutableList<Image>,
+    val identificationRemarks: String = "",
     val collectionID: String = "",
     val occurrenceID: String = "",
     val catalogNumber: String = "",
     val fieldNumber: String = "",
-    val identificationRemarks: String = "",
     val occurrenceStatus: String = "",
     val basisOfRecord: String = "",
     val phylum: String = "",
@@ -26,7 +27,7 @@ data class BiocollectBiom(
 
 }
 
-data class ImageList(val str: String, val recordedBy: String, val license: String, val dateTaken: LocalDate?, val errorList: MutableList<String>) {
+data class ImageList(val str: String, val recordedBy: String, val license: String, val dateTaken: LocalDateTime?, val errorList: MutableList<String>) {
     val iL: MutableList<Image> = mutableListOf()
     private val validExt: List<String> = listOf("png", "jpeg", "jpg", "gif")
     init {
@@ -40,7 +41,7 @@ data class ImageList(val str: String, val recordedBy: String, val license: Strin
     }
 }
 
-data class Image(val str: String, val attribution: String, val license: String, val dateTaken: LocalDate?) {
+data class Image(val str: String, val attribution: String, val license: String, val dateTaken: LocalDateTime?) {
     var url: String = str
     var name: String
     var fileName: String

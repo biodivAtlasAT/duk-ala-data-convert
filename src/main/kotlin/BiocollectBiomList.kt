@@ -81,6 +81,7 @@ object BiocollectBiomList {
                     it.setCellValue(rowData.imageList[0].dateTaken)
                     it.setCellStyle(datumStyle);
                 }
+                row.createCell(30).setCellValue(rowData.identificationRemarks)
             }
             rowIndex++
         }

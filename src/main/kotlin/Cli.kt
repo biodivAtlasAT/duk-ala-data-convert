@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import duk.at.models.Artenzaehlen
 import duk.at.models.Biom
+import duk.at.models.Naturbeobachtung
 import duk.at.services.SpeciesService
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
@@ -16,6 +17,7 @@ import org.apache.poi.ss.usermodel.DataFormatter
 import org.apache.poi.ss.usermodel.DateUtil
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -24,7 +26,7 @@ class Cli  : CliktCommand(){
     val ifile by option(help="Name of the input file").required()
     val ofile by option(help="Name of the output file").required()
     val template by option(help="Name of the template .xlsx-file for bulk upload").required()
-    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN").required()
+    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURBEOBACHTUNG").required()
     val speciesLists by option(help="Names of the used data resources of the lists application").required()
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
     val listsUrl by option(help="URL of the lists tool: e.g.: https://lists.biodivdev.at/ws/speciesListItems").required()
@@ -46,6 +48,15 @@ class Cli  : CliktCommand(){
             println("# of records: ${model.dcList.size}")
             BiocollectBiomList.createWorkbook(model.dcList, this)
         }
+        if (imodel == "NATURBEOBACHTUNG") {
+            val model = Naturbeobachtung(this)
+            model.convert()
+            println("# of records: ${model.dcList.size}")
+            BiocollectBiomList.createWorkbook(model.dcList, this)
+        }
+
+
+
     }
 
 }
@@ -72,6 +83,14 @@ fun <String> MutableList<String>.AddWhenNull(str: LocalDate?, msg: String): Loca
         this.add(msg)
     return str
 }
+
+fun <String> MutableList<String>.AddWhenNull(str: LocalDateTime?, msg: String): LocalDateTime? {
+    if (str == null)
+        this.add(msg)
+    return str
+}
+
+
 fun <String> MutableList<String>.AddWhenNull(str: Double?, msg: String): Double? {
     if (str == null)
         this.add(msg)
@@ -90,8 +109,37 @@ fun Cell.makeDateStringFromString(simpleDateFormat: String): LocalDate? {
             return dateTime
         }
     }
+    if (this.cellType == CellType.STRING) {
+        val formatter = DateTimeFormatter.ofPattern(simpleDateFormat)
+        val localDate = LocalDate.parse(this.stringCellValue, formatter)
+        return localDate
+    }
     return null
 }
+
+fun Cell.makeDateTimeStringFromString(simpleDateFormat: String): LocalDateTime? {
+   /* if (this.cellType != CellType.STRING) {
+        if (DateUtil.isCellDateFormatted(this)) {
+            val date: Date = this.dateCellValue
+            val sdf = SimpleDateFormat(simpleDateFormat)
+            val dateTimeString = sdf.format(date)
+            val formatter = DateTimeFormatter.ISO_DATE
+            val dateTime = LocalDate.parse(dateTimeString, formatter)
+            return dateTime
+        }
+    }*/
+    if (this.cellType == CellType.STRING) {
+        val targetSize = simpleDateFormat.length
+        val str = this.stringCellValue.subSequence(0,targetSize)
+
+        val formatter = DateTimeFormatter.ofPattern(simpleDateFormat)
+        val localDate = LocalDateTime.parse(str, formatter)
+        return localDate
+    }
+    return null
+}
+
+
 
 fun Cell.getScientificName(cli: Cli): String? = SpeciesService.getInstance(
     cli.speciesLists.split(",").toList(),
