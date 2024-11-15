@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Update">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/models/Naturbeobachtung.kt" afterDir="false" />
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="new: Naturbeobachtung">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/models/Herpetofauna.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Biom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Biom.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +178,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;D:\\reinhardt\\firma\\DUK_2024\\testdaten\\Testdaten naturbeobachtung-at.xlsx&quot; --ofile=ccc.xlsx --imodel=NATURBEOBACHTUNG --species-lists=dr77,dr77 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=15 --template=RW_BIOM.xlsx" />
+      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;D:\\reinhardt\\firma\\DUK_2024\\testdaten\\Testdaten naturbeobachtung-at.xlsx&quot; --ofile=ccc.xlsx --imodel=NATURBEOBACHTUNG --species-lists=dr77,dr77 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=20000 --template=RW_BIOM.xlsx" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -236,7 +232,8 @@
       <workItem from="1730891962949" duration="4410000" />
       <workItem from="1730966695060" duration="37074000" />
       <workItem from="1731312174764" duration="1862000" />
-      <workItem from="1731487954491" duration="7431000" />
+      <workItem from="1731487954491" duration="7589000" />
+      <workItem from="1731659402420" duration="4296000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -302,7 +299,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731492642649</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="new: Naturbeobachtung">
+      <option name="closed" value="true" />
+      <created>1731497888345</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1731497888346</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -330,14 +335,15 @@
     <MESSAGE value="CSV Import enabled" />
     <MESSAGE value="Sheetname changed!" />
     <MESSAGE value="Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update" />
+    <MESSAGE value="new: Naturbeobachtung" />
+    <option name="LAST_COMMIT_MESSAGE" value="new: Naturbeobachtung" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>162</line>
+          <line>173</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

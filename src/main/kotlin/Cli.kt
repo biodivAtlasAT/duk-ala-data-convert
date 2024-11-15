@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
 import duk.at.models.Artenzaehlen
 import duk.at.models.Biom
+import duk.at.models.Herpetofauna
 import duk.at.models.Naturbeobachtung
 import duk.at.services.SpeciesService
 import org.apache.poi.ss.usermodel.Cell
@@ -26,7 +27,7 @@ class Cli  : CliktCommand(){
     val ifile by option(help="Name of the input file").required()
     val ofile by option(help="Name of the output file").required()
     val template by option(help="Name of the template .xlsx-file for bulk upload").required()
-    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURBEOBACHTUNG").required()
+    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURBEOBACHTUNG", "HERPETOFAUNA").required()
     val speciesLists by option(help="Names of the used data resources of the lists application").required()
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
     val listsUrl by option(help="URL of the lists tool: e.g.: https://lists.biodivdev.at/ws/speciesListItems").required()
@@ -50,6 +51,12 @@ class Cli  : CliktCommand(){
         }
         if (imodel == "NATURBEOBACHTUNG") {
             val model = Naturbeobachtung(this)
+            model.convert()
+            println("# of records: ${model.dcList.size}")
+            BiocollectBiomList.createWorkbook(model.dcList, this)
+        }
+        if (imodel == "HERPETOFAUNA") {
+            val model = Herpetofauna(this)
             model.convert()
             println("# of records: ${model.dcList.size}")
             BiocollectBiomList.createWorkbook(model.dcList, this)
@@ -130,6 +137,10 @@ fun Cell.makeDateTimeStringFromString(simpleDateFormat: String): LocalDateTime? 
     }*/
     if (this.cellType == CellType.STRING) {
         val targetSize = simpleDateFormat.length
+        if (targetSize > this.stringCellValue.length) {
+            println("${this.stringCellValue}: target size is ${this.stringCellValue}")
+            return null
+        }
         val str = this.stringCellValue.subSequence(0,targetSize)
 
         val formatter = DateTimeFormatter.ofPattern(simpleDateFormat)
