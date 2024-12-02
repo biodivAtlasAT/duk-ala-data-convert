@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="new: Naturbeobachtung">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/models/Herpetofauna.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Naturbeobachtung.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,8 +110,11 @@
     "Kotlin.MainKt (1).executor": "Run",
     "Kotlin.MainKt.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/reinhardt/firma/DUK_2024/sources/duk-ala-data-convert",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -118,11 +124,6 @@
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "kotlin-gradle-user-dirs": [
-      "C:\\Users\\Reinhardt\\.gradle"
-    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -178,7 +179,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;D:\\reinhardt\\firma\\DUK_2024\\testdaten\\Testdaten naturbeobachtung-at.xlsx&quot; --ofile=ccc.xlsx --imodel=NATURBEOBACHTUNG --species-lists=dr77,dr77 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=20000 --template=RW_BIOM.xlsx" />
+      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Naturschutzbund_Nov24\\Amphibien_Daten_StandNov.xlsx&quot; --ofile=aaa.xlsx --imodel=NATURSCHUTZBUND --species-lists=dr77,dr77 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=50000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Single Sighting.xlsx&quot;" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -211,8 +212,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
       </set>
     </attachedChunks>
   </component>
@@ -234,6 +235,8 @@
       <workItem from="1731312174764" duration="1862000" />
       <workItem from="1731487954491" duration="7589000" />
       <workItem from="1731659402420" duration="4296000" />
+      <workItem from="1732895752805" duration="212000" />
+      <workItem from="1733135181254" duration="7489000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -343,8 +346,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>173</line>
-          <option name="timeStamp" value="3" />
+          <line>136</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

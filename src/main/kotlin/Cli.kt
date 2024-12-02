@@ -10,11 +10,10 @@ import com.github.ajalt.clikt.parameters.types.int
 import duk.at.models.Artenzaehlen
 import duk.at.models.Biom
 import duk.at.models.Herpetofauna
-import duk.at.models.Naturbeobachtung
+import duk.at.models.Naturschutzbund
 import duk.at.services.SpeciesService
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
-import org.apache.poi.ss.usermodel.DataFormatter
 import org.apache.poi.ss.usermodel.DateUtil
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -27,7 +26,7 @@ class Cli  : CliktCommand(){
     val ifile by option(help="Name of the input file").required()
     val ofile by option(help="Name of the output file").required()
     val template by option(help="Name of the template .xlsx-file for bulk upload").required()
-    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURBEOBACHTUNG", "HERPETOFAUNA").required()
+    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA").required()
     val speciesLists by option(help="Names of the used data resources of the lists application").required()
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
     val listsUrl by option(help="URL of the lists tool: e.g.: https://lists.biodivdev.at/ws/speciesListItems").required()
@@ -49,8 +48,8 @@ class Cli  : CliktCommand(){
             println("# of records: ${model.dcList.size}")
             BiocollectBiomList.createWorkbook(model.dcList, this)
         }
-        if (imodel == "NATURBEOBACHTUNG") {
-            val model = Naturbeobachtung(this)
+        if (imodel == "NATURSCHUTZBUND") {
+            val model = Naturschutzbund(this)
             model.convert()
             println("# of records: ${model.dcList.size}")
             BiocollectBiomList.createWorkbook(model.dcList, this)

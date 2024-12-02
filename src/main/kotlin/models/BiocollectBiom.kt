@@ -15,6 +15,8 @@ data class BiocollectBiom(
     val comments1: String,
     val imageList: MutableList<Image>,
     val identificationRemarks: String = "",
+    val identificationConfidence1: String = "",
+    val projectName: String = "",
     val collectionID: String = "",
     val occurrenceID: String = "",
     val catalogNumber: String = "",

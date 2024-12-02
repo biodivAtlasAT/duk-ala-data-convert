@@ -38,51 +38,53 @@ object BiocollectBiomList {
         val lonLatStyle: CellStyle = workbook.createCellStyle()
         lonLatStyle.dataFormat = format.getFormat("0.00000000")
 
-        val cell = sheet.getRow(0)?.getCell(0)
-        println("Inhalt der ersten Zelle: ${cell?.toString()}")
-
         var rowIndex = 2
         dcList.forEach{ rowData ->
             val row = sheet.createRow(rowIndex)
 
-            row.createCell(0).setCellValue(rowData.serial)
+            if (rowData.serial.isNotEmpty())
+                row.createCell(0).setCellValue(rowData.serial)
 
-            val c = row.createCell(2)
+            val c = row.createCell(1)
             c.setCellValue(rowData.surveyDate)
             c.setCellStyle(datumStyle);
 
-            row.createCell(4).setCellValue(rowData.comments1)
-            row.createCell(5).setCellValue(rowData.recordedBy)
-            row.createCell(7).also {
+            row.createCell(3).setCellValue(rowData.comments1)
+            row.createCell(4).setCellValue(rowData.recordedBy)
+            row.createCell(6).also {
                 it.setCellValue(rowData.locationLatitude)
                 it.setCellStyle(lonLatStyle);
             }
-            row.createCell(8).also {
+            row.createCell(7).also {
                 it.setCellValue(rowData.locationLongitude)
                 it.setCellStyle(lonLatStyle);
             }
 
-            row.createCell(9).setCellValue(rowData.species1Name)
-            row.createCell(10).setCellValue(rowData.species1ScientificName)
-            row.createCell(11).setCellValue(rowData.species1Name)
-            row.createCell(13).setCellValue(rowData.individualCount1.toDouble())
+            row.createCell(8).setCellValue(rowData.species1Name)
+            row.createCell(9).setCellValue(rowData.species1ScientificName)
+            row.createCell(10).setCellValue(rowData.species1Name)
+            row.createCell(12).setCellValue(rowData.individualCount1.toDouble())
+            row.createCell(13).setCellValue(rowData.identificationConfidence1)
 
             if (rowData.imageList.size > 0) {
-                row.createCell(16).setCellValue(rowData.imageList[0].url)
-                row.createCell(17).setCellValue(rowData.imageList[0].license)
-                row.createCell(18).setCellValue(rowData.imageList[0].name)
-                row.createCell(19).setCellValue(rowData.imageList[0].fileName)
-                row.createCell(20).setCellValue(rowData.imageList[0].attribution)
-                row.createCell(21).setCellValue(rowData.imageList[0].notes)
-                row.createCell(22).setCellValue(rowData.imageList[0].projectId)
-                row.createCell(23).setCellValue(rowData.imageList[0].projectName)
+                row.createCell(15).setCellValue(rowData.imageList[0].url)
+                row.createCell(16).setCellValue(rowData.imageList[0].license)
+                row.createCell(17).setCellValue(rowData.imageList[0].name)
+                row.createCell(18).setCellValue(rowData.imageList[0].fileName)
+                row.createCell(19).setCellValue(rowData.imageList[0].attribution)
+                row.createCell(20).setCellValue(rowData.imageList[0].notes)
+                row.createCell(21).setCellValue(rowData.imageList[0].projectId)
+                row.createCell(22).setCellValue(rowData.imageList[0].projectName)
 
-                row.createCell(24).also {
+                row.createCell(23).also {
                     it.setCellValue(rowData.imageList[0].dateTaken)
                     it.setCellStyle(datumStyle);
                 }
-                row.createCell(30).setCellValue(rowData.identificationRemarks)
             }
+            if (rowData.projectName.isNotEmpty())
+                row.createCell(24).setCellValue(rowData.projectName)
+            if (rowData.identificationRemarks.isNotEmpty())
+                row.createCell(29).setCellValue(rowData.identificationRemarks)
             rowIndex++
         }
 
