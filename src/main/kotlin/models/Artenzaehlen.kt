@@ -56,7 +56,7 @@ class Artenzaehlen(private val cli: Cli){
                     scientificName = SpeciesService.getInstance(
                         cli.speciesLists.split(",").toList(),
                         cli.listsUrl
-                    ).getSpecies(species, cli.bieUrl)
+                    ).getSpecies(species, cli.bieUrl, "")
                 count = convCount(cols[6])
                 comment = cols[8]
                 sightingDate = convDate2(cols[9])

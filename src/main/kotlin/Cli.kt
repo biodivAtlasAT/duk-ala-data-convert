@@ -15,6 +15,7 @@ import duk.at.services.SpeciesService
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.DateUtil
+import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -24,7 +25,8 @@ import java.util.*
 class Cli  : CliktCommand(){
     val verbose by option("-v", "--verbose", help="Show Details").flag()
     val ifile by option(help="Name of the input file").required()
-    val ofile by option(help="Name of the output file").required()
+    //val ofile by option(help="Name of the output file").required()
+    var ofile = ""
     val template by option(help="Name of the template .xlsx-file for bulk upload").required()
     val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA").required()
     val speciesLists by option(help="Names of the used data resources of the lists application").required()
@@ -33,6 +35,9 @@ class Cli  : CliktCommand(){
     val bieUrl by option(help="URL of the bie tool: e.g. https://bie.biodivdev.at/ws/guid").required()
 
     override fun run() {
+        val file = File(ifile)
+        val newFilename = "Conv_"+file.name
+        ofile = file.path.substringBeforeLast(File.separator) + File.separator + newFilename
         if (verbose) {
             echo("Verarbeitete die Datei: ${ifile}")
         }
@@ -151,10 +156,10 @@ fun Cell.makeDateTimeStringFromString(simpleDateFormat: String): LocalDateTime? 
 
 
 
-fun Cell.getScientificName(cli: Cli): String? = SpeciesService.getInstance(
+fun Cell.getScientificName(cli: Cli, defScientificName: String = ""): String? = SpeciesService.getInstance(
     cli.speciesLists.split(",").toList(),
     cli.listsUrl
-).getSpecies(this.stringCellValue, cli.bieUrl)
+).getSpecies(this.stringCellValue, cli.bieUrl, defScientificName)
 
 val Cell.makeLongLatStringFromStringOrNumeric: String?
     get() {

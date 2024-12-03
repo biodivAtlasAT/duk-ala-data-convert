@@ -38,8 +38,12 @@ class SpeciesService private constructor () {
 
     }
 
-    fun getSpecies(name: String, url:  String): String? {
+    fun getSpecies(name: String, url:  String, defaultScientificName: String): String? {
         val bieList = getSpeciesFromBie(name, url)
+        if (bieList.isEmpty() && defaultScientificName.isNotEmpty()) {
+            if (sL.count { defaultScientificName == it.scientificName } > 0)
+                return defaultScientificName
+        }
         bieList.forEach { it1 ->
             if (sL.count { it1.acceptedName == it.scientificName } > 0)
                 return it1.acceptedName

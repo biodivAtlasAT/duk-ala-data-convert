@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
 
 object BiocollectBiomList {
     fun createWorkbook(dcList: List<BiocollectBiom>, cli: Cli) {
@@ -29,6 +30,7 @@ object BiocollectBiomList {
             val cell = row2.createCell(cellIndex)
             cell.setCellValue(cellData.toString())
         }
+        val uuid = UUID.randomUUID()
 
         val createHelper: CreationHelper = workbook.creationHelper
         val datumStyle: CellStyle = workbook.createCellStyle()
@@ -42,9 +44,9 @@ object BiocollectBiomList {
         dcList.forEach{ rowData ->
             val row = sheet.createRow(rowIndex)
 
-            if (rowData.serial.isNotEmpty())
-                row.createCell(0).setCellValue(rowData.serial)
-
+            /*if (rowData.serial.isNotEmpty())
+                row.createCell(0).setCellValue(rowData.serial)*/
+            row.createCell(0).setCellValue("$uuid-${rowIndex-2}")
             val c = row.createCell(1)
             c.setCellValue(rowData.surveyDate)
             c.setCellStyle(datumStyle);

@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="new: Naturbeobachtung">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Template für Naturschutzbund ausprogrammiert!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Naturbeobachtung.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +88,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;wenzi188&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/biodivAtlasAT/duk-ala-data-convert.git&quot;,
+    &quot;accountId&quot;: &quot;7f446502-4409-4484-bd23-8993f3523543&quot;
+  }
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
@@ -179,7 +191,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Naturschutzbund_Nov24\\Amphibien_Daten_StandNov.xlsx&quot; --ofile=aaa.xlsx --imodel=NATURSCHUTZBUND --species-lists=dr77,dr77 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=50000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Single Sighting.xlsx&quot;" />
+      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Naturschutzbund_Nov24\Amphibien_Daten_StandNov.xlsx&quot; --imodel=NATURSCHUTZBUND --species-lists=dr77,dr77 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=100000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Single Sighting.xlsx&quot;" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -236,7 +248,8 @@
       <workItem from="1731487954491" duration="7589000" />
       <workItem from="1731659402420" duration="4296000" />
       <workItem from="1732895752805" duration="212000" />
-      <workItem from="1733135181254" duration="7489000" />
+      <workItem from="1733135181254" duration="7593000" />
+      <workItem from="1733229849838" duration="5147000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -310,7 +323,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731497888346</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Template für Naturschutzbund ausprogrammiert!">
+      <option name="closed" value="true" />
+      <created>1733160000026</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733160000026</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -339,15 +360,21 @@
     <MESSAGE value="Sheetname changed!" />
     <MESSAGE value="Update" />
     <MESSAGE value="new: Naturbeobachtung" />
-    <option name="LAST_COMMIT_MESSAGE" value="new: Naturbeobachtung" />
+    <MESSAGE value="Template für Naturschutzbund ausprogrammiert!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Template für Naturschutzbund ausprogrammiert!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>136</line>
+          <line>141</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt</url>
+          <line>41</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

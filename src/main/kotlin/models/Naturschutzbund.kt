@@ -37,7 +37,7 @@ class Naturschutzbund(private val cli: Cli){
 
             for (row in sheet) {
                 if (row.rowNum < startLine) continue
-                if (row.rowNum > cli.count + startLine) break
+                if (row.rowNum > cli.count + startLine-1) break
 
                 var species: String? = null
                 var projectName: String = ""
@@ -54,18 +54,20 @@ class Naturschutzbund(private val cli: Cli){
                 var identificationRemarks: String? = null
                 var identificationConfidence1 = "uncertain"
                 var errorList: MutableList<String> = mutableListOf()
+                var defaultScientificName: String = ""
 
                 var cntArray = IntArray(6)
 
                 for (cell in row) {
                     imageList.clear()
                     if (cell.columnIndex == 1) projectName = cell.stringCellValue
+                    if (cell.columnIndex == 2) defaultScientificName = cell.stringCellValue
                     if (cell.columnIndex == 4) {
                         species = cell.stringCellValue
                         if (species.isEmpty())
-                            errorList.add("column ART is empty!")
+                            errorList.add("column ART/Species is empty!")
                         else
-                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli),"scientificName for <$species> not found in BIE or not in LIST!")
+                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli, defaultScientificName),"scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!")
 
                     }
                     if (cell.columnIndex in 8..13) {
@@ -88,7 +90,7 @@ class Naturschutzbund(private val cli: Cli){
                 }
                 count = cntArray.sum()
                 if (count == 0)
-                    errorList.add("Individual Count = 0")
+                    errorList.add("Individual Count = 0 in sum of rows from : I to N ")
 
                 if (errorList.size == 0) {
                     dcList.add(BiocollectBiom(
