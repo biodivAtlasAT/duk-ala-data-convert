@@ -7,10 +7,8 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
-import duk.at.models.Artenzaehlen
-import duk.at.models.Biom
-import duk.at.models.Herpetofauna
-import duk.at.models.Naturschutzbund
+import duk.at.models.*
+import duk.at.services.CollectoryService
 import duk.at.services.SpeciesService
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
@@ -28,11 +26,14 @@ class Cli  : CliktCommand(){
     //val ofile by option(help="Name of the output file").required()
     var ofile = ""
     val template by option(help="Name of the template .xlsx-file for bulk upload").required()
-    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA").required()
+    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA", "GLOBAL2000").required()
     val speciesLists by option(help="Names of the used data resources of the lists application").required()
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
     val listsUrl by option(help="URL of the lists tool: e.g.: https://lists.biodivdev.at/ws/speciesListItems").required()
     val bieUrl by option(help="URL of the bie tool: e.g. https://bie.biodivdev.at/ws/guid").required()
+    val instCode by option (help="institution code of the provider map - must exist in collectory application").required()
+    val collCode by option (help="collection code of the provider map - must exist in collectory application").required()
+    val collectoryUrl by option(help="URL of the collectory tool: e.g. https://collectory.biodivdev.at/ws").required()
 
     override fun run() {
         val file = File(ifile)
@@ -41,6 +42,12 @@ class Cli  : CliktCommand(){
         if (verbose) {
             echo("Verarbeitete die Datei: ${ifile}")
         }
+        if (!CollectoryService.checkProviderMap(this)) {
+            echo ("ProviderMap: $instCode and $collCode not found in collectory application!")
+            echo ("Program cancelled!")
+            return
+        }
+
        if (imodel == "BIOM") {
             val biom = Biom(this)
             val l = biom.convert()
@@ -64,6 +71,12 @@ class Cli  : CliktCommand(){
             model.convert()
             println("# of records: ${model.dcList.size}")
             BiocollectBiomList.createWorkbook(model.dcList, this)
+        }
+        if (imodel == "GLOBAL2000") {
+            val model = Global2000(this)
+            model.convert()
+            println("# of records: ${model.dcList.size}")
+            // BiocollectBiomList.createWorkbook(model.dcList, this)
         }
 
 
@@ -109,14 +122,21 @@ fun <String> MutableList<String>.AddWhenNull(str: Double?, msg: String): Double?
 }
 
 
-fun Cell.makeDateStringFromString(simpleDateFormat: String): LocalDate? {
+fun Cell.makeDateStringFromString(simpleDateFormat: String, german: Boolean = false): LocalDate? {
     if (this.cellType != CellType.STRING) {
         if (DateUtil.isCellDateFormatted(this)) {
             val date: Date = this.dateCellValue
             val sdf = SimpleDateFormat(simpleDateFormat)
             val dateTimeString = sdf.format(date)
-            val formatter = DateTimeFormatter.ISO_DATE
+            var formatter = DateTimeFormatter.ISO_DATE
+
+            if (german) {
+                val locale = Locale("de", "DE") // Example: German locale
+                formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", locale)
+            }
+
             val dateTime = LocalDate.parse(dateTimeString, formatter)
+
             return dateTime
         }
     }
