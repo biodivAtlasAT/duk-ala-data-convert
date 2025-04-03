@@ -59,8 +59,8 @@ class Biom(private val cli: Cli){
                         species = cell.stringCellValue
                         if (species.isEmpty())
                             errorList.add("column ART is empty!")
-                        else
-                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli),"scientificName for <$species> not found in BIE or not in LIST!")
+                  /*      else
+                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli),"scientificName for <$species> not found in BIE or not in LIST!")*/
                     }
                     if (cell.columnIndex == 6) count = errorList.AddWhenNull(cell.makeIntFromStringOrNumeric, "ANZAHL_1 is incorrect!")
                     if (cell.columnIndex == 8) comment = cell.makeStringFromStringOrNumeric
@@ -78,7 +78,7 @@ class Biom(private val cli: Cli){
                 if (imageList.size == 0)
                     errorList.add("No valid Image found!")
                 if (errorList.size == 0) {
-                    dcList.add(BiocollectBiom(
+                 /*   dcList.add(BiocollectBiom(
                         serial,
                         surveyDate!!,
                         recordedBy,
@@ -89,7 +89,7 @@ class Biom(private val cli: Cli){
                         count!!.toInt(),
                         comment,
                         imageList
-                    ))
+                    ))*/
                 } else {
                     val err = "Error in RowNum: ${row.rowNum} <Serial: $serial>: " + errorList.joinToString(", ")
                     logger?.error(err)
@@ -145,7 +145,7 @@ class Biom(private val cli: Cli){
             c.setCellValue(rowData.surveyDate)
             c.setCellStyle(datumStyle);
 
-            row.createCell(4).setCellValue(rowData.comments1)
+            row.createCell(4).setCellValue(rowData.notes)
             row.createCell(5).setCellValue(rowData.recordedBy)
             row.createCell(7).also {
                 it.setCellValue(rowData.locationLatitude)

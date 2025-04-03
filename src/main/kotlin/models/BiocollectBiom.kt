@@ -2,29 +2,26 @@ package duk.at.models
 
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 data class BiocollectBiom(
     val serial: String,
     val surveyDate: LocalDate,
+    val surveyStartTime: LocalTime?,
+    val notes: String,
     val recordedBy: String,
+    val location: String?,
     val locationLatitude: Double,
     val locationLongitude: Double,
     val species1Name: String,
     val species1ScientificName: String,
+    val species1CommonName: String,
+    val species1Guid: String,
     val individualCount1: Int,
-    val comments1: String,
-    val imageList: MutableList<Image>,
-    val identificationRemarks: String = "",
-    val identificationConfidence1: String = "",
-    val projectName: String = "",
-    val collectionID: String = "",
-    val occurrenceID: String = "",
-    val catalogNumber: String = "",
-    val fieldNumber: String = "",
-    val occurrenceStatus: String = "",
-    val basisOfRecord: String = "",
-    val phylum: String = "",
-    val clazz: String = "",
+    val comments: String,
+    val institutionCode: String,
+    val collectionCode: String,
+    val imageList: MutableList<Image>
 ) {
 
 }

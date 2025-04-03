@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Template für Naturschutzbund ausprogrammiert!">
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Anpassungen: ofile-Option, serial number">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Biom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Biom.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Herpetofauna.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Herpetofauna.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt" afterDir="false" />
     </list>
@@ -100,6 +103,9 @@
     &quot;accountId&quot;: &quot;7f446502-4409-4484-bd23-8993f3523543&quot;
   }
 }</component>
+  <component name="KotlinScriptingSettings">
+    <option name="suppressDefinitionsCheck" value="true" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
   </component>
@@ -117,10 +123,12 @@
   "keyToString": {
     "Gradle.Build duk-ala-data-convert.executor": "Run",
     "Gradle.Download Sources.executor": "Run",
+    "Gradle.duk-ala-data-convert [clean].executor": "Run",
     "Gradle.duk-ala-data-convert [jar].executor": "Run",
+    "Gradle.duk-ala-data-convert [run].executor": "Run",
     "Gradle.duk-ala-data-convert [shadowJar].executor": "Run",
     "Kotlin.MainKt (1).executor": "Run",
-    "Kotlin.MainKt.executor": "Run",
+    "Kotlin.MainKt.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
@@ -135,6 +143,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.language.Kotlin.scripting",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -144,6 +153,28 @@
     </key>
   </component>
   <component name="RunManager" selected="Kotlin.MainKt">
+    <configuration name="duk-ala-data-convert [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="duk-ala-data-convert [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -156,6 +187,28 @@
         <option name="taskNames">
           <list>
             <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="duk-ala-data-convert [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="run" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -191,7 +244,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Naturschutzbund_Nov24\Amphibien_Daten_StandNov.xlsx&quot; --imodel=NATURSCHUTZBUND --species-lists=dr77,dr77 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=100000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten\\Single Sighting.xlsx&quot;" />
+      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\testdaten\\naturbeobachtung_standMärz_Wechselkröte.xlsx&quot; --imodel=NATURSCHUTZBUND --species-lists=dr52 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=200000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten_März25\Single_Sighting_Universal.xlsx&quot; --inst-code=INSTI --coll-code=COLLY" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -207,6 +260,8 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Gradle.duk-ala-data-convert [clean]" />
+      <item itemvalue="Gradle.duk-ala-data-convert [run]" />
       <item itemvalue="Gradle.duk-ala-data-convert [jar]" />
       <item itemvalue="Gradle.duk-ala-data-convert [shadowJar]" />
       <item itemvalue="Kotlin.MainKt" />
@@ -215,17 +270,17 @@
       <list>
         <item itemvalue="Kotlin.MainKt" />
         <item itemvalue="Gradle.duk-ala-data-convert [shadowJar]" />
+        <item itemvalue="Gradle.duk-ala-data-convert [run]" />
+        <item itemvalue="Gradle.duk-ala-data-convert [clean]" />
         <item itemvalue="Gradle.duk-ala-data-convert [jar]" />
-        <item itemvalue="Kotlin.MainKt" />
-        <item itemvalue="Kotlin.MainKt" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.153" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.153" />
       </set>
     </attachedChunks>
   </component>
@@ -249,7 +304,14 @@
       <workItem from="1731659402420" duration="4296000" />
       <workItem from="1732895752805" duration="212000" />
       <workItem from="1733135181254" duration="7593000" />
-      <workItem from="1733229849838" duration="5147000" />
+      <workItem from="1733229849838" duration="6664000" />
+      <workItem from="1733470372050" duration="4674000" />
+      <workItem from="1734093774813" duration="26000" />
+      <workItem from="1737713163768" duration="1850000" />
+      <workItem from="1737715150252" duration="647000" />
+      <workItem from="1741340492445" duration="807000" />
+      <workItem from="1743058234849" duration="3361000" />
+      <workItem from="1743664753686" duration="9874000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -331,7 +393,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733160000026</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Anpassungen: ofile-Option, serial number">
+      <option name="closed" value="true" />
+      <created>1733235827850</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1733235827850</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -361,22 +431,42 @@
     <MESSAGE value="Update" />
     <MESSAGE value="new: Naturbeobachtung" />
     <MESSAGE value="Template für Naturschutzbund ausprogrammiert!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Template für Naturschutzbund ausprogrammiert!" />
+    <MESSAGE value="Anpassungen: ofile-Option, serial number" />
+    <option name="LAST_COMMIT_MESSAGE" value="Anpassungen: ofile-Option, serial number" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>141</line>
+          <line>143</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt</url>
+          <line>82</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt</url>
-          <line>41</line>
-          <option name="timeStamp" value="7" />
+          <line>42</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt</url>
+          <line>66</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt</url>
+          <line>52</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

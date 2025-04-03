@@ -82,8 +82,10 @@ class Herpetofauna(private val cli: Cli){
                         species = cell.stringCellValue
                         if (species.isEmpty())
                             errorList.add("column ART is empty!")
-                        else
+                      /*  else
                             scientificName = errorList.AddWhenNull(cell.getScientificName(cli),"scientificName for <$species> not found in BIE or not in LIST!")
+                            */
+
                     }
                     if (cell.columnIndex in 27..31) cntArray[cell.columnIndex-27] = cell.numericCellValue.toInt()
                     if (cell.columnIndex == 32) identificationRemarks = if (cell.stringCellValue == null) "" else cell.stringCellValue
@@ -120,7 +122,7 @@ class Herpetofauna(private val cli: Cli){
                 if (imageList.size == 0)
                     errorList.add("No valid Image found!")
                 if (errorList.size == 0) {
-                    dcList.add(BiocollectBiom(
+             /*       dcList.add(BiocollectBiom(
                         serial,
                         surveyDate!!,
                         recordedBy,
@@ -132,7 +134,7 @@ class Herpetofauna(private val cli: Cli){
                         comment,
                         imageList,
                         identificationRemarks ?: ""
-                    ))
+                    ))*/
                 } else {
                     val err = "Error in RowNum: ${row.rowNum+1} " + errorList.joinToString(", ")
                     logger?.error(err)

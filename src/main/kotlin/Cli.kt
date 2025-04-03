@@ -33,6 +33,8 @@ class Cli  : CliktCommand(){
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
     val listsUrl by option(help="URL of the lists tool: e.g.: https://lists.biodivdev.at/ws/speciesListItems").required()
     val bieUrl by option(help="URL of the bie tool: e.g. https://bie.biodivdev.at/ws/guid").required()
+    val instCode by option(help="Providermap for institution").required()
+    val collCode by option(help="Providermap for collection").required()
 
     override fun run() {
         val file = File(ifile)
@@ -156,10 +158,10 @@ fun Cell.makeDateTimeStringFromString(simpleDateFormat: String): LocalDateTime? 
 
 
 
-fun Cell.getScientificName(cli: Cli, defScientificName: String = ""): String? = SpeciesService.getInstance(
+/*fun Cell.getScientificName(cli: Cli, defScientificName: String = ""): String? = SpeciesService.getInstance(
     cli.speciesLists.split(",").toList(),
     cli.listsUrl
-).getSpecies(this.stringCellValue, cli.bieUrl, defScientificName)
+).getSpecies(this.stringCellValue, cli.bieUrl, defScientificName)*/
 
 val Cell.makeLongLatStringFromStringOrNumeric: String?
     get() {

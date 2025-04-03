@@ -44,14 +44,12 @@ object BiocollectBiomList {
         dcList.forEach{ rowData ->
             val row = sheet.createRow(rowIndex)
 
-            /*if (rowData.serial.isNotEmpty())
-                row.createCell(0).setCellValue(rowData.serial)*/
             row.createCell(0).setCellValue("$uuid-${rowIndex-2}")
             val c = row.createCell(1)
             c.setCellValue(rowData.surveyDate)
             c.setCellStyle(datumStyle);
 
-            row.createCell(3).setCellValue(rowData.comments1)
+            row.createCell(3).setCellValue(rowData.notes)
             row.createCell(4).setCellValue(rowData.recordedBy)
             row.createCell(6).also {
                 it.setCellValue(rowData.locationLatitude)
@@ -65,28 +63,30 @@ object BiocollectBiomList {
             row.createCell(8).setCellValue(rowData.species1Name)
             row.createCell(9).setCellValue(rowData.species1ScientificName)
             row.createCell(10).setCellValue(rowData.species1Name)
+            row.createCell(11).setCellValue(rowData.species1Guid)
             row.createCell(12).setCellValue(rowData.individualCount1.toDouble())
-            row.createCell(13).setCellValue(rowData.identificationConfidence1)
+            row.createCell(13).setCellValue(rowData.comments)
+            var offset = 9
+            rowData.imageList.forEach {
+                var startPos = 14
+                row.createCell(startPos).setCellValue(rowData.imageList[0].url)
+                row.createCell(startPos+1).setCellValue(rowData.imageList[0].license)
+                row.createCell(startPos+2).setCellValue(rowData.imageList[0].name)
+                row.createCell(startPos+3).setCellValue(rowData.imageList[0].fileName)
+                row.createCell(startPos+4).setCellValue(rowData.imageList[0].attribution)
+                row.createCell(startPos+5).setCellValue(rowData.imageList[0].notes)
+                row.createCell(startPos+6).setCellValue(rowData.imageList[0].projectId)
+                row.createCell(startPos+7).setCellValue(rowData.imageList[0].projectName)
 
-            if (rowData.imageList.size > 0) {
-                row.createCell(15).setCellValue(rowData.imageList[0].url)
-                row.createCell(16).setCellValue(rowData.imageList[0].license)
-                row.createCell(17).setCellValue(rowData.imageList[0].name)
-                row.createCell(18).setCellValue(rowData.imageList[0].fileName)
-                row.createCell(19).setCellValue(rowData.imageList[0].attribution)
-                row.createCell(20).setCellValue(rowData.imageList[0].notes)
-                row.createCell(21).setCellValue(rowData.imageList[0].projectId)
-                row.createCell(22).setCellValue(rowData.imageList[0].projectName)
-
-                row.createCell(23).also {
+                row.createCell(startPos+8).also {
                     it.setCellValue(rowData.imageList[0].dateTaken)
                     it.setCellStyle(datumStyle);
                 }
+                startPos += offset
             }
-            if (rowData.projectName.isNotEmpty())
-                row.createCell(24).setCellValue(rowData.projectName)
-            if (rowData.identificationRemarks.isNotEmpty())
-                row.createCell(29).setCellValue(rowData.identificationRemarks)
+            row.createCell(50).setCellValue(rowData.institutionCode)
+            row.createCell(51).setCellValue(rowData.collectionCode)
+
             rowIndex++
         }
 

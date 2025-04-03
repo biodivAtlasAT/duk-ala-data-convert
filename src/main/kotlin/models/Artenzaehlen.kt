@@ -56,7 +56,7 @@ class Artenzaehlen(private val cli: Cli){
                     scientificName = SpeciesService.getInstance(
                         cli.speciesLists.split(",").toList(),
                         cli.listsUrl
-                    ).getSpecies(species, cli.bieUrl, "")
+                    ).getSpecies(species, cli.bieUrl, "")?.acceptedName
                 count = convCount(cols[6])
                 comment = cols[8]
                 sightingDate = convDate2(cols[9])
@@ -76,7 +76,7 @@ class Artenzaehlen(private val cli: Cli){
 
 
                 if (errorList.isEmpty()) {
-                    dcList.add(BiocollectBiom(
+              /*      dcList.add(BiocollectBiom(
                         serial,
                         surveyDate!!,
                         recordedBy,
@@ -87,7 +87,7 @@ class Artenzaehlen(private val cli: Cli){
                         count!!.toInt(),
                         comment,
                         imageList
-                    ))
+                    ))*/
                 } else {
                     val err = "Error in <Serial: $serial>: " + errorList.joinToString(", ")
                     logger?.error(err)

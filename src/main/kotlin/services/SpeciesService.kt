@@ -38,21 +38,26 @@ class SpeciesService private constructor () {
 
     }
 
-    fun getSpecies(name: String, url:  String, defaultScientificName: String): String? {
-        val bieList = getSpeciesFromBie(name, url)
+    fun getSpecies(name: String, url:  String, defaultScientificName: String): BieItem? {
+        //val bieList = getSpeciesFromBie(name, url)
+        val bieList = getSpeciesFromBie(defaultScientificName, url)
+
         if (bieList.isEmpty() && defaultScientificName.isNotEmpty()) {
-            if (sL.count { defaultScientificName == it.scientificName } > 0)
-                return defaultScientificName
+            if (sL.count { defaultScientificName == it.scientificName } > 0) {
+                val listItem = sL.first { defaultScientificName == it.scientificName }
+                return BieItem(listItem.id.toString(), defaultScientificName, listItem.lsid ?: "", listItem.name)
+            }
         }
         bieList.forEach { it1 ->
             if (sL.count { it1.acceptedName == it.scientificName } > 0)
-                return it1.acceptedName
+                return it1
         }
         return null
     }
 
     private fun getSpeciesFromBie(name: String, url: String): List<BieItem> {
-        val encodedPara = URLEncoder.encode(name, "UTF-8")
+        //val encodedPara = URLEncoder.encode(name, "UTF-8")
+        val encodedPara = name.replace(" ", "%20")
         val client = HttpClient.newBuilder().build()
         val request = HttpRequest.newBuilder()
             .uri(URI.create("$url/$encodedPara"))

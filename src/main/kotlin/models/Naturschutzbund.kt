@@ -1,6 +1,7 @@
 package duk.at.models
 
 import duk.at.*
+import duk.at.services.SpeciesService
 import org.apache.logging.log4j.LogManager
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
@@ -9,6 +10,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 
 class Naturschutzbund(private val cli: Cli){
@@ -29,7 +31,7 @@ class Naturschutzbund(private val cli: Cli){
     val dcList = mutableListOf<BiocollectBiom>()
 
     fun convert() {
-        val startLine = 2
+        val startLine = 1
         try {
             val file = FileInputStream(File(cli.ifile))
             val workbook: Workbook = XSSFWorkbook(file)
@@ -45,7 +47,7 @@ class Naturschutzbund(private val cli: Cli){
                 var recordedBy: String = ""
                 var longitude: Double? = null
                 var latitude: Double? = null
-                var comment = ""
+                var notes = ""
                 var sightingDate: LocalDateTime? = null
                 var surveyDate: LocalDate? = null
                 var imageList: MutableList<Image> = mutableListOf()
@@ -55,6 +57,7 @@ class Naturschutzbund(private val cli: Cli){
                 var identificationConfidence1 = "uncertain"
                 var errorList: MutableList<String> = mutableListOf()
                 var defaultScientificName: String = ""
+                var guid: String = ""
 
                 var cntArray = IntArray(6)
 
@@ -66,14 +69,26 @@ class Naturschutzbund(private val cli: Cli){
                         species = cell.stringCellValue
                         if (species.isEmpty())
                             errorList.add("column ART/Species is empty!")
-                        else
-                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli, defaultScientificName),"scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!")
+                        else {
+                            val foundSpecies = SpeciesService.getInstance(
+                                cli.speciesLists.split(",").toList(),
+                                cli.listsUrl
+                            ).getSpecies(cell.stringCellValue, cli.bieUrl, defaultScientificName)
 
+                            if (foundSpecies == null) {
+                                errorList.AddWhenNull(foundSpecies as String?,
+                                    "scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!"
+                                )
+                            } else {
+                                scientificName = foundSpecies.name
+                                guid = foundSpecies.identifier
+                            }
+                        }
                     }
                     if (cell.columnIndex in 8..13) {
                         cntArray[cell.columnIndex - 8] = cell.numericCellValue.toInt()
                     }
-                    if (cell.columnIndex == 22) comment = cell.stringCellValue
+                    if (cell.columnIndex == 22) notes = cell.stringCellValue
                     if (cell.columnIndex == 30) {
                         if (cell.numericCellValue.toInt() == 3 || cell.numericCellValue.toInt() == 5) {
                             errorList.add("QS_Status is ${cell.numericCellValue}")
@@ -96,17 +111,21 @@ class Naturschutzbund(private val cli: Cli){
                     dcList.add(BiocollectBiom(
                         serial,
                         surveyDate!!,
+                        null,
+                        notes,
                         recordedBy,
+                        null,
                         latitude!!,
                         longitude!!,
                         species!!,
                         scientificName!!,
+                        species!!,
+                        guid,
                         count.toInt(),
-                        comment,
-                        imageList,
-                        identificationRemarks!!,
-                        identificationConfidence1,
-                        projectName
+                        "",
+                        cli.instCode,
+                        cli.collCode,
+                        imageList
                     ))
                 } else {
                     val err = "Error in Row: ${row.rowNum+1}: " + errorList.joinToString(", ")
