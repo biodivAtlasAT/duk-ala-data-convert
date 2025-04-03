@@ -11,6 +11,7 @@ import duk.at.models.Artenzaehlen
 import duk.at.models.Biom
 import duk.at.models.Herpetofauna
 import duk.at.models.Naturschutzbund
+import duk.at.services.CollectoryService
 import duk.at.services.SpeciesService
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
@@ -35,6 +36,7 @@ class Cli  : CliktCommand(){
     val bieUrl by option(help="URL of the bie tool: e.g. https://bie.biodivdev.at/ws/guid").required()
     val instCode by option(help="Providermap for institution").required()
     val collCode by option(help="Providermap for collection").required()
+    val collectoryUrl by option(help="URL for the collectory tool e.g. https://collectory.biodivdev.at/ws").required()
 
     override fun run() {
         val file = File(ifile)
@@ -43,6 +45,13 @@ class Cli  : CliktCommand(){
         if (verbose) {
             echo("Verarbeitete die Datei: ${ifile}")
         }
+
+        if (!CollectoryService.checkProviderMap(this)) {
+            echo ("Providermap: $instCode and $collCode not found in collectory application!")
+            echo ("Program aborted!")
+            return
+        }
+
        if (imodel == "BIOM") {
             val biom = Biom(this)
             val l = biom.convert()

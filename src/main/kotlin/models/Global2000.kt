@@ -63,7 +63,7 @@ class Global2000(private val cli: Cli){
                 for (cell in row) {
                     imageList.clear()
                     if (cell.columnIndex == 0) serial = cell.makeIntFromStringOrNumeric.toString()
-                    if (cell.columnIndex == 1) surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("dd.MM.yyyy", true), "TIMESTAMP is incorrect!")
+//                    if (cell.columnIndex == 1) surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("dd.MM.yyyy", true), "TIMESTAMP is incorrect!")
                     //if (cell.columnIndex == 3) notes = cell.stringCellValue
                     if (cell.columnIndex == 4) recordedBy = errorList.AddWhenEmpty(cell.stringCellValue, "Observer is empty!")
                     if (cell.columnIndex == 6) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2,"Longitude is incorrect!")
@@ -73,8 +73,8 @@ class Global2000(private val cli: Cli){
                         species = cell.stringCellValue
                         if (species.isEmpty())
                             errorList.add("column ART/Species is empty!")
-                        else
-                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli, defaultScientificName),"scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!")
+                      /*  else
+                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli, defaultScientificName),"scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!")*/
                     }
                     //if (cell.columnIndex == 10) commonName = cell.stringCellValue
                     if (cell.columnIndex == 12) count = cell.numericCellValue.toInt()
@@ -88,7 +88,7 @@ class Global2000(private val cli: Cli){
                 }
 
                 if (errorList.size == 0) {
-                    dcList.add(BiocollectBiom(
+               /*     dcList.add(BiocollectBiom(
                         serial,
                         surveyDate!!,
                         recordedBy,
@@ -102,7 +102,7 @@ class Global2000(private val cli: Cli){
                         identificationRemarks!!,
                         identificationConfidence1,
                         projectName
-                    ))
+                    ))*/
                 } else {
                     val err = "Error in Row: ${row.rowNum+1}: " + errorList.joinToString(", ")
                     logger?.error(err)

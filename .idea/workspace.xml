@@ -6,14 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Naturschutzbund fertig">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/BiocollectBiom.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Biom.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Biom.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Herpetofauna.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Herpetofauna.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Global2000.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Global2000.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +122,7 @@
     "Gradle.duk-ala-data-convert [run].executor": "Run",
     "Gradle.duk-ala-data-convert [shadowJar].executor": "Run",
     "Kotlin.MainKt (1).executor": "Run",
-    "Kotlin.MainKt.executor": "Debug",
+    "Kotlin.MainKt.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
@@ -244,7 +238,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\testdaten\\naturbeobachtung_standMärz_Wechselkröte.xlsx&quot; --imodel=NATURSCHUTZBUND --species-lists=dr52 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=200000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten_März25\Single_Sighting_Universal.xlsx&quot; --inst-code=INSTI --coll-code=COLLY" />
+      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\testdaten\\naturbeobachtung_standMärz.xlsx&quot; --imodel=NATURSCHUTZBUND --species-lists=dr52 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=200000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten_März25\Single_Sighting_Universal.xlsx&quot; --inst-code=GLOBAL2K --coll-code=HERPF --collectory-url=https://collectory.biodivdev.at/ws" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -311,7 +305,7 @@
       <workItem from="1737715150252" duration="647000" />
       <workItem from="1741340492445" duration="807000" />
       <workItem from="1743058234849" duration="3361000" />
-      <workItem from="1743664753686" duration="10522000" />
+      <workItem from="1743664753686" duration="11487000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -409,7 +403,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743690527741</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Naturschutzbund fertig">
+      <option name="closed" value="true" />
+      <created>1743690715784</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1743690715784</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -448,7 +450,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>143</line>
+          <line>152</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
