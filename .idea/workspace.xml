@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Anpassungen: ofile-Option, serial number">
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Naturschutzbund fertig">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/BiocollectBiomList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
@@ -311,7 +311,7 @@
       <workItem from="1737715150252" duration="647000" />
       <workItem from="1741340492445" duration="807000" />
       <workItem from="1743058234849" duration="3361000" />
-      <workItem from="1743664753686" duration="9874000" />
+      <workItem from="1743664753686" duration="10522000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -401,7 +401,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733235827850</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Naturschutzbund fertig">
+      <option name="closed" value="true" />
+      <created>1743690527741</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1743690527741</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -432,7 +440,8 @@
     <MESSAGE value="new: Naturbeobachtung" />
     <MESSAGE value="Template für Naturschutzbund ausprogrammiert!" />
     <MESSAGE value="Anpassungen: ofile-Option, serial number" />
-    <option name="LAST_COMMIT_MESSAGE" value="Anpassungen: ofile-Option, serial number" />
+    <MESSAGE value="Naturschutzbund fertig" />
+    <option name="LAST_COMMIT_MESSAGE" value="Naturschutzbund fertig" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
