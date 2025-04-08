@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Naturschutzbund fertig">
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Naturschutzbund fertig und gemerged">
+      <change afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Config.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Global2000.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Global2000.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,9 +77,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Object" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -142,6 +143,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\reinhardt\firma\DUK_2024\sources\duk-ala-data-convert" />
+    </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="models" />
     </key>
@@ -238,7 +242,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\testdaten\\naturbeobachtung_standMärz.xlsx&quot; --imodel=NATURSCHUTZBUND --species-lists=dr52 --lists-url=https://lists.biodivdev.at/ws/speciesListItems --bie-url=https://bie.biodivdev.at/ws/guid --count=200000 --template=&quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten_März25\Single_Sighting_Universal.xlsx&quot; --inst-code=GLOBAL2K --coll-code=HERPF --collectory-url=https://collectory.biodivdev.at/ws" />
+      <option name="PROGRAM_PARAMETERS" value="--cfg-file=config.properties --ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\testdaten\\naturbeobachtung_standMärz.xlsx&quot; --imodel=NATURSCHUTZBUND --count=200000 --inst-code=GLOBAL2K --coll-code=HERPF" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -305,7 +309,8 @@
       <workItem from="1737715150252" duration="647000" />
       <workItem from="1741340492445" duration="807000" />
       <workItem from="1743058234849" duration="3361000" />
-      <workItem from="1743664753686" duration="11487000" />
+      <workItem from="1743664753686" duration="12820000" />
+      <workItem from="1744090854031" duration="1737000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -411,7 +416,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743690715784</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Naturschutzbund fertig und gemerged">
+      <option name="closed" value="true" />
+      <created>1743691614143</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1743691614143</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,14 +456,15 @@
     <MESSAGE value="Template für Naturschutzbund ausprogrammiert!" />
     <MESSAGE value="Anpassungen: ofile-Option, serial number" />
     <MESSAGE value="Naturschutzbund fertig" />
-    <option name="LAST_COMMIT_MESSAGE" value="Naturschutzbund fertig" />
+    <MESSAGE value="Naturschutzbund fertig und gemerged" />
+    <option name="LAST_COMMIT_MESSAGE" value="Naturschutzbund fertig und gemerged" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>152</line>
+          <line>166</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
@@ -472,6 +486,11 @@
           <url>file://$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt</url>
           <line>52</line>
           <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
+          <line>44</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

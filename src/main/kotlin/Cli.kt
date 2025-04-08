@@ -22,23 +22,37 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.system.exitProcess
 
 class Cli  : CliktCommand(){
     val verbose by option("-v", "--verbose", help="Show Details").flag()
     val ifile by option(help="Name of the input file").required()
-    //val ofile by option(help="Name of the output file").required()
-    var ofile = ""
-    val template by option(help="Name of the template .xlsx-file for bulk upload").required()
-    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA").required()
-    val speciesLists by option(help="Names of the used data resources of the lists application").required()
+//    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA").required()
+    val imodel by option(help="Name of the input file model").choice("NATURSCHUTZBUND").required()
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
-    val listsUrl by option(help="URL of the lists tool: e.g.: https://lists.biodivdev.at/ws/speciesListItems").required()
-    val bieUrl by option(help="URL of the bie tool: e.g. https://bie.biodivdev.at/ws/guid").required()
     val instCode by option(help="Providermap for institution").required()
     val collCode by option(help="Providermap for collection").required()
-    val collectoryUrl by option(help="URL for the collectory tool e.g. https://collectory.biodivdev.at/ws").required()
+    val cfgFile by option(help="Name of the configuration file").required()
+
+    lateinit var template: String
+    lateinit var speciesLists: String
+    lateinit var listsUrl: String
+    lateinit var bieUrl: String
+    lateinit var collectoryUrl: String
+    var ofile = ""
 
     override fun run() {
+        ConfigFileName.create(cfgFile)
+        if (Config.notFound) exitProcess(1)
+        template = Config.getProperty("template")?:""
+        speciesLists = Config.getProperty("speciesLists")?:""
+        listsUrl = Config.getProperty("listsUrl")?:""
+        bieUrl = Config.getProperty("bieUrl")?:""
+        collectoryUrl = Config.getProperty("collectoryUrl")?:""
+        if (template.isEmpty()|| speciesLists.isEmpty() || listsUrl.isEmpty() ||
+            collectoryUrl.isEmpty() || bieUrl.isEmpty())
+            exitProcess(2)
+
         val file = File(ifile)
         val newFilename = "Conv_"+file.name
         ofile = file.path.substringBeforeLast(File.separator) + File.separator + newFilename
