@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Naturschutzbund fertig und gemerged">
-      <change afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Config.kt" afterDir="false" />
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="changed to config.properties">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,7 +308,7 @@
       <workItem from="1741340492445" duration="807000" />
       <workItem from="1743058234849" duration="3361000" />
       <workItem from="1743664753686" duration="12820000" />
-      <workItem from="1744090854031" duration="1737000" />
+      <workItem from="1744090854031" duration="3253000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -424,7 +422,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743691614143</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="changed to config.properties">
+      <option name="closed" value="true" />
+      <created>1744092616921</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1744092616921</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,7 +463,8 @@
     <MESSAGE value="Anpassungen: ofile-Option, serial number" />
     <MESSAGE value="Naturschutzbund fertig" />
     <MESSAGE value="Naturschutzbund fertig und gemerged" />
-    <option name="LAST_COMMIT_MESSAGE" value="Naturschutzbund fertig und gemerged" />
+    <MESSAGE value="changed to config.properties" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed to config.properties" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
