@@ -17,8 +17,8 @@ First time steps:
   
 5.  Determine the start parameters: see start script below as an example; the institution and collection codes must be defined in collectory
 
-Run the program (the first time it needs some time to compile):
-6. WINDOWS:  .\gradlew run --args="--cfg-file=config.properties --ifile "PATH_TO_XLSX_FILE" --imodel=NATURSCHUTZBUND --count=200000 --inst-code=GLOBAL2K --coll-code=HERPF"  
+Run the program (the first time it needs some time to compile), to run the example exchange "PATH_TO_XLSX_FILE" with: example\\naturbeobachtung_test.xlsx
+6. WINDOWS:  .\gradlew run --args="--cfg-file=example.config.properties --ifile "PATH_TO_XLSX_FILE" --imodel=NATURSCHUTZBUND --count=60 --inst-code=GLOBAL2K --coll-code=HERPF"  
 
 
     Options:  

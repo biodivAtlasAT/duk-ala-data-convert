@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="changed to config.properties">
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="README updates">
+      <change afterPath="$PROJECT_DIR$/example.config.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
@@ -127,7 +128,7 @@
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/reinhardt/firma/DUK_2024/sources/duk-ala-data-convert",
+    "last_opened_file_path": "C:/reinhardt/firma/DUK_2024/sources/newGeoNB/duk-ala-data-convert",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -141,6 +142,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\reinhardt\firma\DUK_2024\sources\newGeoNB\duk-ala-data-convert" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\reinhardt\firma\DUK_2024\sources\duk-ala-data-convert" />
     </key>
@@ -275,8 +279,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.153" />
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.153" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
       </set>
     </attachedChunks>
   </component>
@@ -309,6 +313,10 @@
       <workItem from="1743058234849" duration="3361000" />
       <workItem from="1743664753686" duration="12820000" />
       <workItem from="1744090854031" duration="3253000" />
+      <workItem from="1744407367401" duration="122000" />
+      <workItem from="1746701491032" duration="26000" />
+      <workItem from="1747030444288" duration="22000" />
+      <workItem from="1747288352868" duration="2939000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -430,7 +438,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744092616921</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="README updates">
+      <option name="closed" value="true" />
+      <created>1747290451134</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1747290451134</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -464,16 +480,12 @@
     <MESSAGE value="Naturschutzbund fertig" />
     <MESSAGE value="Naturschutzbund fertig und gemerged" />
     <MESSAGE value="changed to config.properties" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed to config.properties" />
+    <MESSAGE value="README updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="README updates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>166</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/models/Naturschutzbund.kt</url>
           <line>82</line>
@@ -493,11 +505,6 @@
           <url>file://$PROJECT_DIR$/src/main/kotlin/services/SpeciesService.kt</url>
           <line>52</line>
           <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>44</line>
-          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
