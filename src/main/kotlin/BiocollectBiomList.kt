@@ -67,19 +67,19 @@ object BiocollectBiomList {
             row.createCell(12).setCellValue(rowData.individualCount1.toDouble())
             row.createCell(13).setCellValue(rowData.comments)
             var offset = 9
-            rowData.imageList.forEach {
-                var startPos = 14
-                row.createCell(startPos).setCellValue(rowData.imageList[0].url)
-                row.createCell(startPos+1).setCellValue(rowData.imageList[0].license)
-                row.createCell(startPos+2).setCellValue(rowData.imageList[0].name)
-                row.createCell(startPos+3).setCellValue(rowData.imageList[0].fileName)
-                row.createCell(startPos+4).setCellValue(rowData.imageList[0].attribution)
-                row.createCell(startPos+5).setCellValue(rowData.imageList[0].notes)
-                row.createCell(startPos+6).setCellValue(rowData.imageList[0].projectId)
-                row.createCell(startPos+7).setCellValue(rowData.imageList[0].projectName)
+            var startPos = 14
+            rowData.imageList.take(4).forEach { img ->
+                row.createCell(startPos).setCellValue(img.url)
+                row.createCell(startPos+1).setCellValue(img.license)
+                row.createCell(startPos+2).setCellValue(img.name)
+                row.createCell(startPos+3).setCellValue(img.fileName)
+                row.createCell(startPos+4).setCellValue(img.attribution)
+                row.createCell(startPos+5).setCellValue(img.notes)
+                row.createCell(startPos+6).setCellValue(img.projectId)
+                row.createCell(startPos+7).setCellValue(img.projectName)
 
                 row.createCell(startPos+8).also {
-                    it.setCellValue(rowData.imageList[0].dateTaken)
+                    it.setCellValue(img.dateTaken)
                     it.setCellStyle(datumStyle);
                 }
                 startPos += offset

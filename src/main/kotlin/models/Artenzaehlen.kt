@@ -3,129 +3,119 @@ package duk.at.models
 import duk.at.*
 import duk.at.services.SpeciesService
 import org.apache.logging.log4j.LogManager
-import org.apache.poi.ss.usermodel.CellStyle
-import org.apache.poi.ss.usermodel.CreationHelper
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
+import java.time.LocalTime
 
 
 class Artenzaehlen(private val cli: Cli){
-    /* ID;TIMESTAMP;FILEORDNER;GARTEN_HASH;GARTEN_ID;ART;ANZAHL_1;ANZAHL_2;ANZAHL_ANMERKUNG;
-    DATUM;SCHONMAL;ADRESSE_1;ADRESSE_2;LÄNGENGRAD;BREITENGRAD;ABGESIEDELT;ABGESIEDELT_WHY;
-    ANGESIEDELT;ANGESIEDELT_WHY;EMAIL;VORNAME;NACHNAME;DATEIEN;GARTEN-FORM;*/
+    /*ID_num	ID	PHOTO_1	PHOTO_2	PHOTO_3	PHOTO_4	PHOTO_5	DATEIEN	quality	kleingarten	lat_final	lon_final	uncert	art_val */
 
     companion object {
         private val logger: org.apache.logging.log4j.Logger? = LogManager.getLogger()
     }
     val dcList = mutableListOf<BiocollectBiom>()
-    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-    private val formatter2 = DateTimeFormatter.ofPattern("d/MM/yyyy")
 
-    fun convertCSV(){
-        File(cli.ifile).useLines { lines ->
-            lines.drop(1).take(cli.count).forEach { line ->
-                var species: String?
-                var count: Int?
-                var recordedBy: String
-                var longitude: Double?
-                var latitude: Double?
-                var comment: String
-                var sightingDate: LocalDateTime?
-                var surveyDate: LocalDate?
-                var imageList: MutableList<Image>
-                var serial: String
+    fun convert() {
+        val startLine = 1
+        try {
+            val file = FileInputStream(File(cli.ifile))
+            val workbook: Workbook = XSSFWorkbook(file)
+            val sheet: Sheet = workbook.getSheetAt(0)
+
+            for (row in sheet) {
+                if (row.rowNum < startLine) continue
+                if (row.rowNum > cli.count + startLine-1) break
+
+                var species: String? = null
+                var projectName: String = ""
+                var count: Int? = null
+                var recordedBy: String = ""
+                var longitude: Double? = null
+                var latitude: Double? = null
+                var notes = ""
+                var sightingDate: LocalDateTime? = null
+                var surveyDate: LocalDate? = null
+                var imageList: MutableList<Image> = mutableListOf()
+                var serial: String = ""
                 var scientificName: String? = null
                 var errorList: MutableList<String> = mutableListOf()
+                var defaultScientificName: String = ""
+                var guid: String = ""
 
-                val cols = line.split(";")
+                imageList.clear()
 
-                serial = cols[0]
-                surveyDate = convDate(cols[1])
-                species = cols[5]
-                if (species.isEmpty())
-                    errorList.add("column ART is empty!")
-                else
-                    scientificName = SpeciesService.getInstance(
-                        cli.speciesLists.split(",").toList(),
-                        cli.listsUrl
-                    ).getSpecies(species, cli.bieUrl, "")?.acceptedName
-                count = convCount(cols[6])
-                comment = cols[8]
-                sightingDate = convDate2(cols[9])
-                longitude = cols[13].toDoubleOrNull()
-                latitude = cols[14].toDoubleOrNull()
-                recordedBy = cols[20].trim() + " " + cols[21].trim()
-                imageList = ImageList(cols[22], recordedBy, "CC BY 3.0", sightingDate, errorList).iL
-
-                if (surveyDate == null) errorList.add("Error in SurveyDate!")
-                if (scientificName == null) errorList.add("scientificName <$scientificName> not found in BIE or not in specified LISTS!")
-                if (count == null) errorList.add("Count is not set correctly!")
-                if (longitude == null) errorList.add("Longitude is not set correctly!")
-                if (latitude == null) errorList.add("Latitude is not set correctly!")
-                if (longitude == 0.0) errorList.add("Longitude is not set correctly!")
-                if (latitude == 0.0) errorList.add("Latitude is not set correctly!")
-                if (imageList.isEmpty()) errorList.add("No image provided or unallowed format!")
+                for (cell in row) {
+                    if (cell.columnIndex == 0) serial = cell.makeStringFromStringOrNumeric
+                    if (cell.columnIndex == 2 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 3 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 4 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 5 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 10) latitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2, "Latitude is incorrect!")
+                    if (cell.columnIndex == 11) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2,"Longitude is incorrect!")
 
 
-                if (errorList.isEmpty()) {
-              /*      dcList.add(BiocollectBiom(
-                        serial,
-                        surveyDate!!,
-                        recordedBy,
-                        latitude!!,
-                        longitude!!,
-                        species,
-                        scientificName!!,
-                        count!!.toInt(),
-                        comment,
-                        imageList
-                    ))*/
-                } else {
-                    val err = "Error in <Serial: $serial>: " + errorList.joinToString(", ")
-                    logger?.error(err)
+
+                    if (cell.columnIndex == 13) {
+                        species = cell.stringCellValue
+                        defaultScientificName = species
+                        if (species.isEmpty())
+                            errorList.add("column ART/Species is empty!")
+                        else {
+                            val foundSpecies = SpeciesService.getInstance(
+                                cli.speciesLists.split(",").toList(),
+                                cli.listsUrl
+                            ).getSpecies(cell.stringCellValue, cli.bieUrl, defaultScientificName)
+
+                            if (foundSpecies == null) {
+                                errorList.AddWhenNull(foundSpecies as String?,
+                                    "scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!"
+                                )
+                            } else {
+                                scientificName = foundSpecies.name
+                                guid = foundSpecies.identifier
+                            }
+                        }
+                    }
                 }
 
+                if (errorList.size == 0) {
+                    dcList.add(BiocollectBiom(
+                        serial,
+                        cli.datum!!,
+                        null,
+                        notes,
+                        recordedBy,
+                        null,
+                        latitude!!,
+                        longitude!!,
+                        species!!,
+                        scientificName!!,
+                        species,
+                        guid,
+                        1,
+                        "",
+                        cli.instCode,
+                        cli.collCode,
+                        imageList
+                    ))
+                } else {
+                    val err = "Error in Row: ${row.rowNum+1}: " + errorList.joinToString(", ")
+                    logger?.error(err)
+                }
             }
+
+            file.close()
+            workbook.close()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-    }
-
-    fun convDate(str: String): LocalDate? {
-        try {
-            return LocalDate.parse(str, formatter)
-        } catch (ex: DateTimeParseException) {
-            return null
-        }
-    }
-
-    fun convDate2(str: String): LocalDateTime? {
-        try {
-            return LocalDateTime.parse(str, formatter2)
-        } catch (ex: DateTimeParseException) {
-            return null
-        }
-    }
-
-
-    fun convCount(str: String): Int? {
-        try {
-            if (str.startsWith(">"))
-                return str.split(">")[1].toInt()
-            else
-                return str.split(" ")[0].toInt()
-        }
-        catch (ex: Exception) {
-            return null
-        }
-
-
     }
 
 }

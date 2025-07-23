@@ -1,16 +1,10 @@
 package duk.at
 
 import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.parameters.options.default
-import com.github.ajalt.clikt.parameters.options.flag
-import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.int
-import duk.at.models.Artenzaehlen
-import duk.at.models.Biom
-import duk.at.models.Herpetofauna
-import duk.at.models.Naturschutzbund
+import duk.at.models.*
 import duk.at.services.CollectoryService
 import duk.at.services.SpeciesService
 import org.apache.poi.ss.usermodel.Cell
@@ -28,11 +22,17 @@ class Cli  : CliktCommand(){
     val verbose by option("-v", "--verbose", help="Show Details").flag()
     val ifile by option(help="Name of the input file").required()
 //    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA").required()
-    val imodel by option(help="Name of the input file model").choice("NATURSCHUTZBUND").required()
+    val imodel by option(help="Name of the input file model").choice("NATURSCHUTZBUND", "ARTENZAEHLEN").required()
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
     val instCode by option(help="Providermap for institution").required()
     val collCode by option(help="Providermap for collection").required()
     val cfgFile by option(help="Name of the configuration file").required()
+    val datum by option("--datum", help = "Survey Datum im Format dd.mm.yyyy (nur für die Option ARTENZAEHLEN")
+        .convert { input ->
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            LocalDate.parse(input, formatter)
+     }
+
 
     lateinit var template: String
     lateinit var speciesLists: String
@@ -73,8 +73,12 @@ class Cli  : CliktCommand(){
             biom.createWorkbook(l)
         }
         if (imodel == "ARTENZAEHLEN") {
+            if (datum == null) {
+                echo ("Parameter --datum ist erforderlich, wenn --mode=ARTENZAEHLEN")
+                exitProcess(1)
+            }
             val model = Artenzaehlen(this)
-            model.convertCSV()
+            model.convert()
             println("# of records: ${model.dcList.size}")
             BiocollectBiomList.createWorkbook(model.dcList, this)
         }

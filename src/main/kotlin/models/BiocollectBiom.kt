@@ -40,7 +40,7 @@ data class ImageList(val str: String, val recordedBy: String, val license: Strin
     }
 }
 
-data class Image(val str: String, val attribution: String, val license: String, val dateTaken: LocalDateTime?) {
+data class Image(val str: String, val attribution: String = "", val license: String = "", val dateTaken: LocalDateTime? = null) {
     var url: String = str
     var name: String
     var fileName: String
