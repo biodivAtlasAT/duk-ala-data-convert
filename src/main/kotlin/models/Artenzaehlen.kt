@@ -14,7 +14,7 @@ import java.time.LocalTime
 
 
 class Artenzaehlen(private val cli: Cli){
-    /*ID_num	ID	PHOTO_1	PHOTO_2	PHOTO_3	PHOTO_4	PHOTO_5	DATEIEN	quality	kleingarten	lat_final	lon_final	uncert	art_val */
+    /*ID_num	ID	PHOTO_1	PHOTO_2	PHOTO_3	PHOTO_4	PHOTO_5	DATEIEN	quality	kleingarten	lat_final	lon_final	uncert	art_val DATUM*/
 
     companion object {
         private val logger: org.apache.logging.log4j.Logger? = LogManager.getLogger()
@@ -59,8 +59,6 @@ class Artenzaehlen(private val cli: Cli){
                     if (cell.columnIndex == 10) latitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2, "Latitude is incorrect!")
                     if (cell.columnIndex == 11) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2,"Longitude is incorrect!")
 
-
-
                     if (cell.columnIndex == 13) {
                         species = cell.stringCellValue
                         defaultScientificName = species
@@ -82,12 +80,18 @@ class Artenzaehlen(private val cli: Cli){
                             }
                         }
                     }
+                    if (cell.columnIndex == 15) surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("yyyy-MM-dd"), "TIMESTAMP is incorrect!")
+
+                }
+
+                if (surveyDate == null) {
+                    errorList.add("TIMESTAMP is empty!")
                 }
 
                 if (errorList.size == 0) {
                     dcList.add(BiocollectBiom(
                         serial,
-                        cli.datum!!,
+                        surveyDate!!,
                         null,
                         notes,
                         recordedBy,

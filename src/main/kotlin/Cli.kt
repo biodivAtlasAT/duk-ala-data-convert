@@ -27,11 +27,11 @@ class Cli  : CliktCommand(){
     val instCode by option(help="Providermap for institution").required()
     val collCode by option(help="Providermap for collection").required()
     val cfgFile by option(help="Name of the configuration file").required()
-    val datum by option("--datum", help = "Survey Datum im Format dd.mm.yyyy (nur für die Option ARTENZAEHLEN")
+  /*  val datum by option("--datum", help = "Survey Datum im Format dd.mm.yyyy (nur für die Option ARTENZAEHLEN")
         .convert { input ->
             val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             LocalDate.parse(input, formatter)
-     }
+     }*/
 
 
     lateinit var template: String
@@ -73,10 +73,10 @@ class Cli  : CliktCommand(){
             biom.createWorkbook(l)
         }
         if (imodel == "ARTENZAEHLEN") {
-            if (datum == null) {
+            /*if (datum == null) {
                 echo ("Parameter --datum ist erforderlich, wenn --mode=ARTENZAEHLEN")
                 exitProcess(1)
-            }
+            }*/
             val model = Artenzaehlen(this)
             model.convert()
             println("# of records: ${model.dcList.size}")
