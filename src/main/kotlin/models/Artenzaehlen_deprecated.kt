@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 
-class Artenzaehlen_V1(private val cli: Cli){
+class Artenzaehlen_deprecated(private val cli: Cli){
     /* ID;TIMESTAMP;FILEORDNER;GARTEN_HASH;GARTEN_ID;ART;ANZAHL_1;ANZAHL_2;ANZAHL_ANMERKUNG;
     DATUM;SCHONMAL;ADRESSE_1;ADRESSE_2;LÄNGENGRAD;BREITENGRAD;ABGESIEDELT;ABGESIEDELT_WHY;
     ANGESIEDELT;ANGESIEDELT_WHY;EMAIL;VORNAME;NACHNAME;DATEIEN;GARTEN-FORM;*/
