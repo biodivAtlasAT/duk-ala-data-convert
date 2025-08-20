@@ -1,6 +1,8 @@
 package duk.at.models
 
 import duk.at.*
+import duk.at.models.Artenzaehlen.Companion
+import duk.at.services.SpeciesService
 import org.apache.logging.log4j.LogManager
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
@@ -12,9 +14,6 @@ import java.time.LocalDateTime
 
 
 class Global2000(private val cli: Cli){
-    /* Global200 sends an xls file which has already the structure of the survey
-    a few columns have to be added
-     */
 
     companion object {
         private val logger: org.apache.logging.log4j.Logger? = LogManager.getLogger()
@@ -22,7 +21,9 @@ class Global2000(private val cli: Cli){
     val dcList = mutableListOf<BiocollectBiom>()
 
     fun convert() {
-        val startLine = 2
+        /* ID	GARTEN_ID	ADRESSE_1	ADRESSE_2	ART_VAL	quality	lat_final	lon_final	uncert
+        file1	file2	file3	file4	file5	file6	file7	file8	DATUM */
+        val startLine = 1
         try {
             val file = FileInputStream(File(cli.ifile))
             val workbook: Workbook = XSSFWorkbook(file)
@@ -38,74 +39,78 @@ class Global2000(private val cli: Cli){
                 var recordedBy: String = ""
                 var longitude: Double? = null
                 var latitude: Double? = null
-                var comment = ""
+                var notes = ""
                 var sightingDate: LocalDateTime? = null
                 var surveyDate: LocalDate? = null
                 var imageList: MutableList<Image> = mutableListOf()
                 var serial: String = ""
                 var scientificName: String? = null
-                var identificationRemarks: String? = null
-                var identificationConfidence1 = "uncertain"
                 var errorList: MutableList<String> = mutableListOf()
                 var defaultScientificName: String = ""
+                var guid: String = ""
 
-                var cntArray = IntArray(6)
-
-                /* serial	surveyDate	surveyStartTime	notes	recordedBy	location	locationLatitude	locationLongitude
-                species1.name	species1.scientificName	species1.commonName	species1.guid	individualCount1
-                identificationConfidence1	comments1
-                sightingPhoto1.url	sightingPhoto1.licence	sightingPhoto1.name	sightingPhoto1.filename	sightingPhoto1.attribution	sightingPhoto1.notes	sightingPhoto1.projectId    sightingPhoto1.projectName	sightingPhoto1.dateTaken
-                sightingPhoto2.url	sightingPhoto2.licence	sightingPhoto2.name	sightingPhoto2.filename	sightingPhoto2.attribution	sightingPhoto2.notes	sightingPhoto2.projectId	sightingPhoto2.projectName	sightingPhoto2.dateTaken
-                sightingPhoto3.url	sightingPhoto3.licence	sightingPhoto3.name	sightingPhoto3.filename	sightingPhoto3.attribution	sightingPhoto3.notes	sightingPhoto3.projectId	sightingPhoto3.projectName	sightingPhoto3.dateTaken
-                sightingPhoto4.url	sightingPhoto4.licence	sightingPhoto4.name	sightingPhoto4.filename	sightingPhoto4.attribution	sightingPhoto4.notes	sightingPhoto4.projectId	sightingPhoto4.projectName	sightingPhoto4.dateTaken
-                project_name	collectionID	occurrenceID	catalogNumber	fieldNumber	identificationRemarks	occurrenceStatus	basisOfRecord	institutionCode	collectionCode	phylum	class */
+                imageList.clear()
 
                 for (cell in row) {
-                    imageList.clear()
-                    if (cell.columnIndex == 0) serial = cell.makeIntFromStringOrNumeric.toString()
-//                    if (cell.columnIndex == 1) surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("dd.MM.yyyy", true), "TIMESTAMP is incorrect!")
-                    //if (cell.columnIndex == 3) notes = cell.stringCellValue
-                    if (cell.columnIndex == 4) recordedBy = errorList.AddWhenEmpty(cell.stringCellValue, "Observer is empty!")
-                    if (cell.columnIndex == 6) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2,"Longitude is incorrect!")
-                    if (cell.columnIndex == 7) latitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2, "Latitude is incorrect!")
-                    //if (cell.columnIndex == 8) name = cell.stringCellValue
-                    if (cell.columnIndex == 9) {
+                    if (cell.columnIndex == 0) serial = cell.makeStringFromStringOrNumeric
+                    if (cell.columnIndex == 4) {
                         species = cell.stringCellValue
+                        defaultScientificName = species
                         if (species.isEmpty())
                             errorList.add("column ART/Species is empty!")
-                      /*  else
-                            scientificName = errorList.AddWhenNull(cell.getScientificName(cli, defaultScientificName),"scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!")*/
+                        else {
+                            val foundSpecies = SpeciesService.getInstance(
+                                cli.speciesLists.split(",").toList(),
+                                cli.listsUrl
+                            ).getSpecies(cell.stringCellValue, cli.bieUrl, defaultScientificName)
+
+                            if (foundSpecies == null) {
+                                errorList.AddWhenNull(foundSpecies as String?,
+                                    "scientificName for <$species/$defaultScientificName> not found in BIE or not in LIST!"
+                                )
+                            } else {
+                                scientificName = foundSpecies.name
+                                guid = foundSpecies.identifier
+                            }
+                        }
                     }
-                    //if (cell.columnIndex == 10) commonName = cell.stringCellValue
-                    if (cell.columnIndex == 12) count = cell.numericCellValue.toInt()
-                    if (cell.columnIndex == 14) comment = cell.stringCellValue
-
-                    // --> imageList
-
-                    if (cell.columnIndex == 51) projectName = cell.stringCellValue
-                    if (cell.columnIndex == 56) identificationRemarks = if (cell.stringCellValue == null) "" else cell.stringCellValue
+                    if (cell.columnIndex == 6) latitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2, "Latitude is incorrect!")
+                    if (cell.columnIndex == 7) longitude = errorList.AddWhenNull(cell.makeLongLatStringFromStringOrNumeric2,"Longitude is incorrect!")
+                    if (cell.columnIndex == 9 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 10 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 11 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 12 && cell.stringCellValue != "") imageList.add(Image(cell.stringCellValue))
+                    if (cell.columnIndex == 17) surveyDate = errorList.AddWhenNull(cell.makeDateStringFromString("yyyy-MM-dd"), "TIMESTAMP is incorrect!")
 
                 }
 
+                if (surveyDate == null) {
+                    errorList.add("TIMESTAMP is empty!")
+                }
+
                 if (errorList.size == 0) {
-               /*     dcList.add(BiocollectBiom(
+                    dcList.add(BiocollectBiom(
                         serial,
                         surveyDate!!,
+                        null,
+                        notes,
                         recordedBy,
+                        null,
                         latitude!!,
                         longitude!!,
                         species!!,
                         scientificName!!,
-                        count!!,
-                        comment,
-                        imageList,
-                        identificationRemarks!!,
-                        identificationConfidence1,
-                        projectName
-                    ))*/
+                        species,
+                        guid,
+                        1,
+                        "",
+                        cli.instCode,
+                        cli.collCode,
+                        imageList
+                    ))
                 } else {
                     val err = "Error in Row: ${row.rowNum+1}: " + errorList.joinToString(", ")
-                    logger?.error(err)
+                    Global2000.logger?.error(err)
                 }
             }
 

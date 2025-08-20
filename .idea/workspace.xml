@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="Artenzaehlen mit getestetem Import August 2025" />
+    <list default="true" id="5910062b-11fa-4dec-bc6c-dcae02d9a935" name="Changes" comment="deprecation">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Cli.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/models/Global2000.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/models/Global2000.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -241,7 +245,7 @@
     <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="duk.at.MainKt" />
       <module name="duk-ala-data-convert.main" />
-      <option name="PROGRAM_PARAMETERS" value="--cfg-file=config.properties --ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten_August25\\Meldungen_artenzaehlen_bis_2025_06_02.xlsx&quot; --imodel=ARTENZAEHLEN --count=200000 --inst-code=GLOBAL2K --coll-code=HERPF" />
+      <option name="PROGRAM_PARAMETERS" value="--cfg-file=config.properties --ifile &quot;C:\\reinhardt\\firma\\DUK_2024\\Echtdaten_August25\GLOBAL2000_Verortet_alternativeImgURL.xlsx&quot; --imodel=GLOBAL2000 --count=200000 --inst-code=GLOBAL2K --coll-code=HERPF" />
       <shortenClasspath name="NONE" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -317,7 +321,7 @@
       <workItem from="1753251178722" duration="2300000" />
       <workItem from="1753254166121" duration="5871000" />
       <workItem from="1753263355439" duration="14000" />
-      <workItem from="1755696939257" duration="2575000" />
+      <workItem from="1755696939257" duration="3404000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -463,7 +467,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755702692506</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="deprecation">
+      <option name="closed" value="true" />
+      <created>1755702864525</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1755702864525</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -500,7 +512,8 @@
     <MESSAGE value="README updates" />
     <MESSAGE value="Artenzaehlen mit getestetem Import 23.07.2025" />
     <MESSAGE value="Artenzaehlen mit getestetem Import August 2025" />
-    <option name="LAST_COMMIT_MESSAGE" value="Artenzaehlen mit getestetem Import August 2025" />
+    <MESSAGE value="deprecation" />
+    <option name="LAST_COMMIT_MESSAGE" value="deprecation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -511,13 +524,13 @@
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen_V1.kt</url>
+          <url>file://$PROJECT_DIR$/src/main/kotlin/models/Artenzaehlen_deprecated.kt</url>
           <line>49</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/Cli.kt</url>
-          <line>141</line>
+          <line>147</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>

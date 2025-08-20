@@ -22,7 +22,7 @@ class Cli  : CliktCommand(){
     val verbose by option("-v", "--verbose", help="Show Details").flag()
     val ifile by option(help="Name of the input file").required()
 //    val imodel by option(help="Name of the input file model").choice("BIOM", "ATIV", "ARTENZAEHLEN", "NATURSCHUTZBUND", "HERPETOFAUNA").required()
-    val imodel by option(help="Name of the input file model").choice("NATURSCHUTZBUND", "ARTENZAEHLEN").required()
+    val imodel by option(help="Name of the input file model").choice("NATURSCHUTZBUND", "ARTENZAEHLEN", "GLOBAL2000").required()
     val count by option(help="Count of rows to transform").int().default(Int.MAX_VALUE)
     val instCode by option(help="Providermap for institution").required()
     val collCode by option(help="Providermap for collection").required()
@@ -78,6 +78,12 @@ class Cli  : CliktCommand(){
                 exitProcess(1)
             }*/
             val model = Artenzaehlen(this)
+            model.convert()
+            println("# of records: ${model.dcList.size}")
+            BiocollectBiomList.createWorkbook(model.dcList, this)
+        }
+        if (imodel == "GLOBAL2000") {
+            val model = Global2000(this)
             model.convert()
             println("# of records: ${model.dcList.size}")
             BiocollectBiomList.createWorkbook(model.dcList, this)
